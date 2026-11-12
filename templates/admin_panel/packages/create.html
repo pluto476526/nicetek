@@ -1,0 +1,198 @@
+{% extends 'admin_panel/base.html' %}
+{% load static %}
+
+{% block page_title %}{{ title|default:"Create Package" }}{% endblock %}
+{% block page_subtitle %}{{ subtitle|default:"Add a new service package" }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-{% if form.instance.pk %}edit{% else %}plus{% endif %} me-2"></i>
+                    {{ title|default:"Create Package" }}
+                </h5>
+                <a href="{% url 'admin_panel:package_list' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" class="form-custom">
+                    {% csrf_token %}
+                    
+                    <div class="row g-3">
+                        <!-- Basic Info -->
+                        <div class="col-12">
+                            <h6 class="fw-bold text-primary mb-3"><i class="fas fa-info-circle me-2"></i> Basic Information</h6>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Name *</label>
+                            <input type="text" name="name" class="form-control" value="{{ form.name.value|default:'' }}" required>
+                            {% if form.name.errors %}
+                            <div class="text-danger small">{{ form.name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Category</label>
+                            <select name="category" class="form-select">
+                                <option value="">Select category...</option>
+                                {% for cat in categories %}
+                                <option value="{{ cat.id }}" {% if form.category.value == cat.id %}selected{% endif %}>
+                                    {{ cat.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Description *</label>
+                            <textarea name="description" class="form-control" rows="4" required>{{ form.description.value|default:'' }}</textarea>
+                            {% if form.description.errors %}
+                            <div class="text-danger small">{{ form.description.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Detailed Description</label>
+                            <textarea name="detailed_description" class="form-control" rows="6">{{ form.detailed_description.value|default:'' }}</textarea>
+                        </div>
+                        
+                        <!-- Pricing -->
+                        <div class="col-12 mt-3">
+                            <h6 class="fw-bold text-primary mb-3"><i class="fas fa-tag me-2"></i> Pricing</h6>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Price (KSh) *</label>
+                            <input type="number" name="price" class="form-control" value="{{ form.price.value|default:'' }}" required step="0.01">
+                            {% if form.price.errors %}
+                            <div class="text-danger small">{{ form.price.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Original Price (KSh)</label>
+                            <input type="number" name="original_price" class="form-control" value="{{ form.original_price.value|default:'' }}" step="0.01">
+                            <small class="form-text">Leave empty if not on discount</small>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Timeline</label>
+                            <input type="text" name="timeline" class="form-control" value="{{ form.timeline.value|default:'' }}" placeholder="e.g., 2-3 weeks">
+                        </div>
+                        
+                        <!-- Media -->
+                        <div class="col-12 mt-3">
+                            <h6 class="fw-bold text-primary mb-3"><i class="fas fa-image me-2"></i> Media</h6>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Feature Image</label>
+                            <input type="file" name="image" class="form-control" accept="image/*">
+                            {% if form.instance.image %}
+                            <div class="mt-2">
+                                <img src="{{ form.instance.image.url }}" alt="Current" class="image-thumb">
+                                <small class="text-muted d-block">Current image</small>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Status -->
+                        <div class="col-12 mt-3">
+                            <h6 class="fw-bold text-primary mb-3"><i class="fas fa-toggle-on me-2"></i> Status</h6>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="published" class="form-check-input" {% if form.published.value %}checked{% endif %}>
+                                <label class="form-check-label">Published</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="is_featured" class="form-check-input" {% if form.is_featured.value %}checked{% endif %}>
+                                <label class="form-check-label">Featured</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="is_recommended" class="form-check-input" {% if form.is_recommended.value %}checked{% endif %}>
+                                <label class="form-check-label">Recommended</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="is_best_value" class="form-check-input" {% if form.is_best_value.value %}checked{% endif %}>
+                                <label class="form-check-label">Best Value</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Deliverables -->
+                        <div class="col-12 mt-3">
+                            <h6 class="fw-bold text-primary mb-3"><i class="fas fa-list-check me-2"></i> Deliverables</h6>
+                            <div id="deliverables-container">
+                                {% if form.deliverables.value %}
+                                    {% for item in form.deliverables.value %}
+                                    <div class="input-group mb-2 deliverable-item">
+                                        <input type="text" name="deliverables" class="form-control" value="{{ item }}" placeholder="Deliverable item">
+                                        <button type="button" class="btn btn-outline-danger remove-deliverable">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="input-group mb-2 deliverable-item">
+                                        <input type="text" name="deliverables" class="form-control" placeholder="e.g., WiFi Router Installation">
+                                        <button type="button" class="btn btn-outline-danger remove-deliverable">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="add-deliverable">
+                                <i class="fas fa-plus"></i> Add Deliverable
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save"></i> Save Package
+                        </button>
+                        <a href="{% url 'admin_panel:package_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('add-deliverable').addEventListener('click', function() {
+    const container = document.getElementById('deliverables-container');
+    const div = document.createElement('div');
+    div.className = 'input-group mb-2 deliverable-item';
+    div.innerHTML = `
+        <input type="text" name="deliverables" class="form-control" placeholder="Deliverable item">
+        <button type="button" class="btn btn-outline-danger remove-deliverable">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    container.appendChild(div);
+    div.querySelector('.remove-deliverable').addEventListener('click', function() {
+        div.remove();
+    });
+});
+
+document.querySelectorAll('.remove-deliverable').forEach(btn => {
+    btn.addEventListener('click', function() {
+        this.closest('.deliverable-item').remove();
+    });
+});
+</script>
+{% endblock %}

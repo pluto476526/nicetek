@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Campaign Preview - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="campaign-preview py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="fw-bold">Campaign Preview</h2>
+                    <a href="{% url 'newsletter:campaigns' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                </div>
+                
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5>{{ campaign.subject }}</h5>
+                        <small class="text-muted">Template: {{ campaign.template.name }}</small>
+                    </div>
+                    <div class="card-body">
+                        {{ campaign.content|safe }}
+                    </div>
+                    <div class="card-footer bg-white">
+                        <div class="d-grid gap-2 d-sm-flex">
+                            <a href="{% url 'newsletter:campaign_send' campaign.id %}" class="btn btn-success">
+                                <i class="fas fa-paper-plane"></i> Send Campaign
+                            </a>
+                            <button onclick="window.print()" class="btn btn-outline-primary">
+                                <i class="fas fa-print"></i> Print
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

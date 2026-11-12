@@ -1,0 +1,55 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}{{ title|default:"Update Quote" }}{% endblock %}
+{% block page_subtitle %}{{ subtitle|default:"Update quote request status" }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-edit me-2"></i>
+                    {{ title|default:"Update Quote" }}
+                </h5>
+                <a href="{% url 'admin_panel:quote_list' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+            <div class="card-body">
+                <form method="post" class="form-custom">
+                    {% csrf_token %}
+                    
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Status *</label>
+                            <select name="status" class="form-select" required>
+                                <option value="pending" {% if form.status.value == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="reviewing" {% if form.status.value == 'reviewing' %}selected{% endif %}>Reviewing</option>
+                                <option value="quoted" {% if form.status.value == 'quoted' %}selected{% endif %}>Quoted</option>
+                                <option value="accepted" {% if form.status.value == 'accepted' %}selected{% endif %}>Accepted</option>
+                                <option value="declined" {% if form.status.value == 'declined' %}selected{% endif %}>Declined</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Notes</label>
+                            <textarea name="notes" class="form-control" rows="5">{{ form.notes.value|default:'' }}</textarea>
+                            <small class="form-text">Internal notes about this quote request</small>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save"></i> Update
+                        </button>
+                        <a href="{% url 'admin_panel:quote_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

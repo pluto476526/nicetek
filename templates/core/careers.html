@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Careers - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="careers-page py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold">Join Our Team</h1>
+            <p class="lead text-muted">Be part of a growing technology company that's making a difference in Kenya</p>
+        </div>
+        
+        <!-- Why Join Us -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm text-center p-3">
+                    <div class="card-body">
+                        <i class="fas fa-rocket fa-3x text-primary mb-3"></i>
+                        <h6>Growth Opportunities</h6>
+                        <p class="text-muted small">Learn and grow with our expanding team</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm text-center p-3">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                        <h6>Great Culture</h6>
+                        <p class="text-muted small">Collaborative and supportive environment</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm text-center p-3">
+                    <div class="card-body">
+                        <i class="fas fa-graduation-cap fa-3x text-primary mb-3"></i>
+                        <h6>Learning & Development</h6>
+                        <p class="text-muted small">Continuous learning and skill development</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm text-center p-3">
+                    <div class="card-body">
+                        <i class="fas fa-handshake fa-3x text-primary mb-3"></i>
+                        <h6>Impactful Work</h6>
+                        <p class="text-muted small">Make a difference in Kenyan businesses</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Open Positions -->
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title text-center mb-4">Open Positions</h2>
+                
+                {% if job_openings %}
+                <div class="row g-4">
+                    {% for job in job_openings %}
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h5 class="fw-bold">{{ job.title }}</h5>
+                                    <span class="badge bg-primary">{{ job.get_employment_type_display }}</span>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    <span class="badge bg-light text-dark">
+                                        <i class="fas fa-map-marker-alt"></i> {{ job.location }}
+                                    </span>
+                                    <span class="badge bg-light text-dark">
+                                        <i class="fas fa-level-up-alt"></i> {{ job.get_experience_level_display }}
+                                    </span>
+                                </div>
+                                <p class="text-muted small">{{ job.description|striptags|truncatechars:150 }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    {% if job.salary_range %}
+                                    <span class="text-success fw-bold">{{ job.salary_range }}</span>
+                                    {% endif %}
+                                    <a href="{% url 'core:career_detail' job.slug %}" class="btn btn-primary btn-sm">
+                                        View Details <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-briefcase fa-3x text-muted mb-3"></i>
+                    <h5>No Open Positions</h5>
+                    <p class="text-muted">We don't have any open positions right now. Check back later!</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Request a Quote - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="quote-page py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="text-center mb-5">
+                    <h1 class="display-4 fw-bold">Request a Quote</h1>
+                    <p class="lead text-muted">Tell us about your project and we'll get back to you with a customized solution</p>
+                </div>
+                
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <form method="post" action="{% url 'core:quote' %}">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <!-- Personal Info -->
+                                <div class="col-12">
+                                    <h5 class="fw-bold">Personal Information</h5>
+                                    <hr>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Full Name *</label>
+                                    <input type="text" name="name" class="form-control" placeholder="Your full name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email *</label>
+                                    <input type="email" name="email" class="form-control" placeholder="your@email.com" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone *</label>
+                                    <input type="tel" name="phone" class="form-control" placeholder="+254 700 000 000" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" name="company" class="form-control" placeholder="Your company name">
+                                </div>
+                                
+                                <!-- Project Details -->
+                                <div class="col-12 mt-3">
+                                    <h5 class="fw-bold">Project Details</h5>
+                                    <hr>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Service Type *</label>
+                                    <select name="service_type" class="form-select" required>
+                                        <option value="">Select a service...</option>
+                                        <option value="networking">Networking Solutions</option>
+                                        <option value="security">Security Systems</option>
+                                        <option value="web">Web Development</option>
+                                        <option value="consulting">IT Consulting</option>
+                                        <option value="maintenance">Maintenance & Support</option>
+                                        <option value="custom">Custom Solution</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Preferred Package</label>
+                                    <select name="package" class="form-select">
+                                        <option value="">Select a package...</option>
+                                        {% for package in packages %}
+                                        <option value="{{ package.id }}">{{ package.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Project Details *</label>
+                                    <textarea name="project_details" class="form-control" rows="5" placeholder="Please describe your project in detail..." required></textarea>
+                                </div>
+                                
+                                <!-- Budget & Timeline -->
+                                <div class="col-12 mt-3">
+                                    <h5 class="fw-bold">Budget & Timeline</h5>
+                                    <hr>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Budget Range *</label>
+                                    <select name="budget" class="form-select" required>
+                                        <option value="">Select budget range...</option>
+                                        <option value="0-50000">KSh 0 - 50,000</option>
+                                        <option value="50000-100000">KSh 50,000 - 100,000</option>
+                                        <option value="100000-200000">KSh 100,000 - 200,000</option>
+                                        <option value="200000-500000">KSh 200,000 - 500,000</option>
+                                        <option value="500000+">KSh 500,000+</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Timeline *</label>
+                                    <select name="timeline" class="form-select" required>
+                                        <option value="">Select timeline...</option>
+                                        <option value="immediate">Immediate</option>
+                                        <option value="1-2-weeks">1-2 Weeks</option>
+                                        <option value="1-month">1 Month</option>
+                                        <option value="2-3-months">2-3 Months</option>
+                                        <option value="flexible">Flexible</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="btn btn-primary w-100 py-2">
+                                        <i class="fas fa-paper-plane"></i> Submit Quote Request
+                                    </button>
+                                    <p class="text-muted small mt-2 text-center">
+                                        <i class="fas fa-lock"></i> Your information is secure and will not be shared.
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

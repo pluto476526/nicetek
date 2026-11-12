@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Compare Packages - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="package-compare py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold text-center mb-4">Compare Packages</h1>
+        <p class="lead text-center text-muted mb-5">Find the perfect solution by comparing packages side by side</p>
+        
+        {% if packages %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover compare-table">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:200px;">Features</th>
+                        {% for package in packages %}
+                        <th class="text-center">
+                            <div class="package-header">
+                                <h5 class="fw-bold">{{ package.name }}</h5>
+                                <p class="text-primary fw-bold">KSh {{ package.price|floatformat:0 }}</p>
+                                {% if package.is_recommended %}
+                                <span class="badge bg-warning text-dark">Recommended</span>
+                                {% endif %}
+                                <a href="{% url 'packages:detail' package.slug %}" class="btn btn-sm btn-outline-primary mt-2">
+                                    View Details
+                                </a>
+                            </div>
+                        </th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-secondary">
+                        <td colspan="{{ packages|length|add:1 }}" class="fw-bold">General Information</td>
+                    </tr>
+                    <tr>
+                        <td>Category</td>
+                        {% for package in packages %}
+                        <td class="text-center">{{ package.category.name }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        {% for package in packages %}
+                        <td>{{ package.description|striptags|truncatechars:100 }}</td>
+                        {% endfor %}
+                    </tr>
+                    
+                    <tr class="table-secondary">
+                        <td colspan="{{ packages|length|add:1 }}" class="fw-bold">Features</td>
+                    </tr>
+                    {% for feature in packages.0.features.all %}
+                    <tr>
+                        <td>{{ feature.title }}</td>
+                        {% for package in packages %}
+                        <td class="text-center">
+                            {% with feature_included=False %}
+                                {% for pkg_feature in package.features.all %}
+                                    {% if pkg_feature.title == feature.title %}
+                                        {% if pkg_feature.included %}
+                                        <i class="fas fa-check text-success fa-2x"></i>
+                                        {% else %}
+                                        <i class="fas fa-times text-danger fa-2x"></i>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    
+                    <tr class="table-secondary">
+                        <td colspan="{{ packages|length|add:1 }}" class="fw-bold">Pricing</td>
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        {% for package in packages %}
+                        <td class="text-center fw-bold text-primary">KSh {{ package.price|floatformat:0 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Original Price</td>
+                        {% for package in packages %}
+                        <td class="text-center">
+                            {% if package.original_price %}
+                            <span class="text-decoration-line-through">KSh {{ package.original_price|floatformat:0 }}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    
+                    <tr class="table-secondary">
+                        <td colspan="{{ packages|length|add:1 }}" class="fw-bold">Actions</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        {% for package in packages %}
+                        <td class="text-center">
+                            <a href="{% url 'core:quote' %}?package={{ package.id }}" class="btn btn-primary btn-sm">
+                                Request Quote
+                            </a>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'packages:list' %}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left"></i> Back to Packages
+            </a>
+            <a href="{% url 'core:contact' %}" class="btn btn-primary">
+                <i class="fas fa-envelope"></i> Contact Sales for Custom Quote
+            </a>
+        </div>
+        
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-balance-scale fa-3x text-muted mb-3"></i>
+            <h5>No packages selected for comparison</h5>
+            <p class="text-muted">Select at least 2 packages to compare.</p>
+            <a href="{% url 'packages:list' %}" class="btn btn-primary">
+                Browse Packages
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

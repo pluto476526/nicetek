@@ -1,0 +1,114 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}Testimonials{% endblock %}
+{% block page_subtitle %}Manage all testimonials{% endblock %}
+
+{% block content %}
+<div class="card-custom">
+    <div class="card-header">
+        <h5 class="card-title"><i class="fas fa-star me-2"></i> All Testimonials</h5>
+        <a href="{% url 'admin_panel:testimonial_create' %}" class="btn btn-primary-custom btn-sm">
+            <i class="fas fa-plus"></i> Add Testimonial
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Author</th>
+                        <th>Company</th>
+                        <th>Rating</th>
+                        <th>Status</th>
+                        <th>Featured</th>
+                        <th>Order</th>
+                        <th style="width:150px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for testimonial in testimonials %}
+                    <tr>
+                        <td>
+                            {% if testimonial.image %}
+                            <img src="{{ testimonial.image.url }}" alt="{{ testimonial.author }}" class="image-thumb">
+                            {% else %}
+                            <div class="image-thumb bg-light d-flex align-items-center justify-content-center text-muted">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <strong>{{ testimonial.author }}</strong>
+                            <br>
+                            <small class="text-muted">{{ testimonial.content|truncatechars:50 }}</small>
+                        </td>
+                        <td>{{ testimonial.company|default:"-" }}</td>
+                        <td>
+                            <div class="text-warning">
+                                {% for i in "12345"|slice:testimonial.rating %}
+                                <i class="fas fa-star"></i>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge {% if testimonial.active %}success{% else %}secondary{% endif %}">
+                                {{ testimonial.active|yesno:"Active,Inactive" }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if testimonial.featured %}
+                            <span class="badge bg-warning text-dark">Featured</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ testimonial.order }}</td>
+                        <td>
+                            <div class="action-btns d-flex gap-1">
+                                <a href="{% url 'admin_panel:testimonial_update' testimonial.id %}" class="btn btn-sm btn-outline-success">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'admin_panel:testimonial_delete' testimonial.id %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-4">
+                            <i class="fas fa-star fa-2x text-muted mb-2 d-block"></i>
+                            <p class="text-muted">No testimonials found. <a href="{% url 'admin_panel:testimonial_create' %}">Add one</a></p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if is_paginated %}
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries</small>
+            <nav>
+                <ul class="pagination pagination-custom mb-0">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                    </li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

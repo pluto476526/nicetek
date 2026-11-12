@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Services - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="services-page py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold">Our Services</h1>
+            <p class="lead text-muted">Comprehensive technology solutions tailored to your needs</p>
+        </div>
+        
+        <!-- Filters -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-8">
+                <form method="get" class="d-flex gap-2">
+                    <input type="text" name="search" class="form-control" placeholder="Search services..." value="{{ request.GET.search }}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <select name="category" class="form-select" onchange="window.location.href=this.value ? '?category='+this.value : '?'">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat.slug }}" {% if request.GET.category == cat.slug %}selected{% endif %}>
+                        {{ cat.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <!-- Services Grid -->
+        {% if services %}
+        <div class="row g-4">
+            {% for service in services %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm service-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width:80px;height:80px;">
+                            <i class="fas {{ service.icon }} fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold">{{ service.name }}</h5>
+                        <p class="text-muted small">{{ service.short_description|truncatechars:100 }}</p>
+                        {% if service.starting_price %}
+                        <p class="text-success fw-bold">Starting from KSh {{ service.starting_price|floatformat:0 }}</p>
+                        {% endif %}
+                        <div class="d-grid">
+                            <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-primary">
+                                Learn More <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                        {{ num }}
+                    </a>
+                </li>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-cogs fa-3x text-muted mb-3"></i>
+            <h5>No services found</h5>
+            <p class="text-muted">Try adjusting your search or filter criteria.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

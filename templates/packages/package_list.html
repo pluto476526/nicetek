@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Packages - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="packages-page py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold">Our Packages</h1>
+            <p class="lead text-muted">Choose the perfect technology solution for your business</p>
+        </div>
+        
+        <!-- Filters -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <form method="get" class="d-flex gap-2">
+                    <input type="text" name="search" class="form-control" placeholder="Search packages..." value="{{ request.GET.search }}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-3">
+                <select name="category" class="form-select" onchange="window.location.href=this.value ? '?category='+this.value : '?'">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat.slug }}" {% if request.GET.category == cat.slug %}selected{% endif %}>
+                        {{ cat.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="sort" class="form-select" onchange="window.location.href='?'+this.value">
+                    <option value="">Sort by</option>
+                    <option value="sort=price_asc" {% if request.GET.sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="sort=price_desc" {% if request.GET.sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                    <option value="sort=featured" {% if request.GET.sort == 'featured' %}selected{% endif %}>Featured</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Packages Grid -->
+        {% if packages %}
+        <div class="row g-4">
+            {% for package in packages %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm package-card">
+                    {% if package.image %}
+                    <img src="{{ package.image.url }}" alt="{{ package.name }}" class="card-img-top" style="height:200px;object-fit:cover;">
+                    {% endif %}
+                    
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="fw-bold">{{ package.name }}</h5>
+                            {% if package.is_recommended %}
+                            <span class="badge bg-warning text-dark">Recommended</span>
+                            {% elif package.is_best_value %}
+                            <span class="badge bg-success">Best Value</span>
+                            {% endif %}
+                        </div>
+                        
+                        <p class="text-muted small">{{ package.description|striptags|truncatechars:100 }}</p>
+                        
+                        <div class="price-tag my-3">
+                            <h4 class="text-primary fw-bold">KSh {{ package.price|floatformat:0 }}</h4>
+                            {% if package.original_price %}
+                            <span class="text-decoration-line-through text-muted ms-2">
+                                KSh {{ package.original_price|floatformat:0 }}
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <ul class="list-unstyled mb-3">
+                            {% for feature in package.features.all|slice:":3" %}
+                            <li class="mb-1">
+                                <i class="fas {% if feature.included %}fa-check text-success{% else %}fa-times text-danger{% endif %} me-2"></i>
+                                {{ feature.title }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        
+                        <div class="d-grid">
+                            <a href="{% url 'packages:detail' package.slug %}" class="btn btn-primary">
+                                View Details <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                        {{ num }}
+                    </a>
+                </li>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-box fa-3x text-muted mb-3"></i>
+            <h5>No packages found</h5>
+            <p class="text-muted">Try adjusting your search or filter criteria.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

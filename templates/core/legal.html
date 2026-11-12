@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page|title }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="legal-page py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="card shadow-sm sticky-top" style="top:80px;">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-3">Legal</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <a href="{% url 'core:legal' 'privacy' %}" class="text-decoration-none {% if page == 'privacy' %}fw-bold text-primary{% endif %}">
+                                    Privacy Policy
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="{% url 'core:legal' 'terms' %}" class="text-decoration-none {% if page == 'terms' %}fw-bold text-primary{% endif %}">
+                                    Terms of Service
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="{% url 'core:legal' 'cookies' %}" class="text-decoration-none {% if page == 'cookies' %}fw-bold text-primary{% endif %}">
+                                    Cookie Policy
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h1 class="display-5 fw-bold mb-4">{{ page|title }}</h1>
+                        
+                        {% if page == 'privacy' %}
+                        <div class="legal-content">
+                            <h5>1. Information We Collect</h5>
+                            <p>We collect information you provide directly to us, such as when you create an account, fill out a form, or communicate with us.</p>
+                            
+                            <h5>2. How We Use Your Information</h5>
+                            <p>We use your information to provide and improve our services, communicate with you, and comply with legal obligations.</p>
+                            
+                            <h5>3. Information Sharing</h5>
+                            <p>We do not sell or share your personal information with third parties except as necessary to provide our services or as required by law.</p>
+                            
+                            <h5>4. Data Security</h5>
+                            <p>We implement appropriate security measures to protect your personal information.</p>
+                            
+                            <h5>5. Your Rights</h5>
+                            <p>You have the right to access, correct, or delete your personal information at any time.</p>
+                            
+                            <h5>6. Contact Us</h5>
+                            <p>If you have any questions about this Privacy Policy, please <a href="{% url 'core:contact' %}">contact us</a>.</p>
+                        </div>
+                        
+                        {% elif page == 'terms' %}
+                        <div class="legal-content">
+                            <h5>1. Acceptance of Terms</h5>
+                            <p>By using our services, you agree to these Terms of Service.</p>
+                            
+                            <h5>2. Services</h5>
+                            <p>Nicetek Kenya provides IT solutions including networking, security, and web development services.</p>
+                            
+                            <h5>3. Payment Terms</h5>
+                            <p>Payments are due according to the terms specified in your contract or invoice.</p>
+                            
+                            <h5>4. Intellectual Property</h5>
+                            <p>All content and materials provided by Nicetek are protected by intellectual property laws.</p>
+                            
+                            <h5>5. Limitation of Liability</h5>
+                            <p>Nicetek is not liable for any indirect, incidental, or consequential damages.</p>
+                            
+                            <h5>6. Governing Law</h5>
+                            <p>These terms are governed by the laws of Kenya.</p>
+                        </div>
+                        
+                        {% elif page == 'cookies' %}
+                        <div class="legal-content">
+                            <h5>1. What Are Cookies</h5>
+                            <p>Cookies are small text files stored on your device when you visit our website.</p>
+                            
+                            <h5>2. How We Use Cookies</h5>
+                            <p>We use cookies to improve your browsing experience, analyze site traffic, and personalize content.</p>
+                            
+                            <h5>3. Types of Cookies</h5>
+                            <ul>
+                                <li><strong>Essential Cookies:</strong> Necessary for basic site functionality</li>
+                                <li><strong>Analytics Cookies:</strong> Help us understand how visitors use our site</li>
+                                <li><strong>Preference Cookies:</strong> Remember your preferences and settings</li>
+                            </ul>
+                            
+                            <h5>4. Managing Cookies</h5>
+                            <p>You can manage or disable cookies in your browser settings.</p>
+                            
+                            <h5>5. Updates</h5>
+                            <p>We may update this Cookie Policy from time to time. Please check back periodically.</p>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mt-4">
+                            <small class="text-muted">Last updated: {{ now|date:"F d, Y" }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

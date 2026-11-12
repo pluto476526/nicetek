@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Client Dashboard - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="avatar-circle bg-primary text-white mx-auto mb-3" style="width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;">
+                        {{ client.company_name|slice:":1" }}
+                    </div>
+                    <h5>{{ client.company_name }}</h5>
+                    <p class="text-muted small">{{ client.user.email }}</p>
+                    <hr>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'clients:dashboard' %}" class="btn btn-primary btn-sm">Dashboard</a>
+                        <a href="{% url 'clients:profile' %}" class="btn btn-outline-primary btn-sm">Profile</a>
+                        <a href="{% url 'clients:subscriptions' %}" class="btn btn-outline-primary btn-sm">Subscriptions</a>
+                        <a href="{% url 'clients:invoices' %}" class="btn btn-outline-primary btn-sm">Invoices</a>
+                        <a href="{% url 'clients:tickets' %}" class="btn btn-outline-primary btn-sm">Support Tickets</a>
+                        <a href="{% url 'projects:list' %}" class="btn btn-outline-primary btn-sm">My Projects</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white shadow-sm">
+                        <div class="card-body">
+                            <h6 class="text-white-50">Active Projects</h6>
+                            <h3 class="fw-bold">{{ active_projects|length }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white shadow-sm">
+                        <div class="card-body">
+                            <h6 class="text-white-50">Active Subscriptions</h6>
+                            <h3 class="fw-bold">{{ active_subscriptions|length }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-dark shadow-sm">
+                        <div class="card-body">
+                            <h6 class="text-dark-50">Open Tickets</h6>
+                            <h3 class="fw-bold">{{ open_tickets|length }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white shadow-sm">
+                        <div class="card-body">
+                            <h6 class="text-white-50">Total Invoices</h6>
+                            <h3 class="fw-bold">{{ total_invoices }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Invoices -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Invoices</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_invoices %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Due Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for invoice in recent_invoices %}
+                                <tr>
+                                    <td>{{ invoice.invoice_number }}</td>
+                                    <td>KSh {{ invoice.total|floatformat:0 }}</td>
+                                    <td>
+                                        <span class="badge bg-{% if invoice.status == 'paid' %}success{% elif invoice.status == 'overdue' %}danger{% else %}warning{% endif %}">
+                                            {{ invoice.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ invoice.due_date }}</td>
+                                    <td>
+                                        <a href="{% url 'clients:invoice_detail' invoice.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No invoices yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

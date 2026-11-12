@@ -1,0 +1,169 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}{{ ticket.subject }}{% endblock %}
+{% block page_subtitle %}Support Ticket Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-ticket-alt me-2"></i> Ticket Information
+                </h5>
+                <div>
+                    <a href="{% url 'admin_panel:ticket_update' ticket.id %}" class="btn btn-success-custom btn-sm">
+                        <i class="fas fa-edit"></i> Update
+                    </a>
+                    <a href="{% url 'admin_panel:ticket_delete' ticket.id %}" class="btn btn-danger-custom btn-sm">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <h6>Ticket Details</h6>
+                        <dl>
+                            <dt>Subject</dt>
+                            <dd><strong>{{ ticket.subject }}</strong></dd>
+                            
+                            <dt>Client</dt>
+                            <dd>{{ ticket.client.company_name }}</dd>
+                            
+                            <dt>Category</dt>
+                            <dd>{{ ticket.get_category_display }}</dd>
+                            
+                            <dt>Priority</dt>
+                            <dd>
+                                <span class="badge bg-{% if ticket.priority == 'urgent' %}danger{% elif ticket.priority == 'high' %}warning{% elif ticket.priority == 'medium' %}info{% else %}secondary{% endif %}">
+                                    {{ ticket.get_priority_display }}
+                                </span>
+                            </dd>
+                            
+                            <dt>Status</dt>
+                            <dd>
+                                <span class="status-badge {% if ticket.status == 'open' %}danger{% elif ticket.status == 'in_progress' %}warning{% elif ticket.status == 'resolved' %}success{% else %}secondary{% endif %}">
+                                    {{ ticket.get_status_display }}
+                                </span>
+                            </dd>
+                        </dl>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6>Timeline</h6>
+                        <dl>
+                            <dt>Created</dt>
+                            <dd>{{ ticket.created_at|date:"M d, Y H:i" }}</dd>
+                            
+                            <dt>Last Updated</dt>
+                            <dd>{{ ticket.updated_at|date:"M d, Y H:i" }}</dd>
+                            
+                            {% if ticket.resolved_date %}
+                            <dt>Resolved</dt>
+                            <dd>{{ ticket.resolved_date|date:"M d, Y H:i" }}</dd>
+                            {% endif %}
+                            
+                            <dt>Assigned To</dt>
+                            <dd>
+                                {% if ticket.assigned_to %}
+                                {{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username }}
+                                {% else %}
+                                <span class="text-muted">Unassigned</span>
+                                {% endif %}
+                            </dd>
+                            
+                            {% if ticket.project %}
+                            <dt>Related Project</dt>
+                            <dd>
+                                <a href="{% url 'admin_panel:project_detail' ticket.project.id %}">
+                                    {{ ticket.project.name }}
+                                </a>
+                            </dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <h6>Description</h6>
+                <div class="bg-light p-3 rounded">
+                    {{ ticket.description|safe }}
+                </div>
+                
+                <!-- Responses -->
+                <h6 class="mt-4">
+                    Responses ({{ responses.count }})
+                </h6>
+                {% if responses %}
+                <div class="responses-list">
+                    {% for response in responses %}
+                    <div class="card mb-3 border-{% if response.created_by == ticket.client.user %}info{% else %}primary{% endif %}">
+                        <div class="card-header bg-{% if response.created_by == ticket.client.user %}info{% else %}primary{% endif %} bg-opacity-10">
+                            <div class="d-flex justify-content-between">
+                                <strong>
+                                    {{ response.created_by.get_full_name|default:response.created_by.username }}
+                                    {% if response.created_by == ticket.client.user %}
+                                    <span class="badge bg-info ms-2">Client</span>
+                                    {% else %}
+                                    <span class="badge bg-primary ms-2">Staff</span>
+                                    {% endif %}
+                                </strong>
+                                <small class="text-muted">{{ response.created_at|date:"M d, Y H:i" }}</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {{ response.message|safe }}
+                            {% if response.attachment %}
+                            <div class="mt-2">
+                                <a href="{{ response.attachment.url }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-paperclip"></i> View Attachment
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">No responses yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card-custom mb-3">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-link me-2"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'admin_panel:ticket_update' ticket.id %}" class="btn btn-success-custom">
+                        <i class="fas fa-edit"></i> Update Ticket
+                    </a>
+                    {% if ticket.status != 'resolved' and ticket.status != 'closed' %}
+                    <form method="post" action="{% url 'admin_panel:ticket_update' ticket.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="resolved">
+                        <button type="submit" class="btn btn-primary-custom w-100">
+                            <i class="fas fa-check"></i> Mark as Resolved
+                        </button>
+                    </form>
+                    {% endif %}
+                    <a href="{% url 'admin_panel:client_detail' ticket.client.id %}" class="btn btn-outline-primary">
+                        <i class="fas fa-user"></i> View Client
+                    </a>
+                    <a href="{% url 'admin_panel:ticket_delete' ticket.id %}" class="btn btn-danger-custom">
+                        <i class="fas fa-trash"></i> Delete Ticket
+                    </a>
+                    <a href="{% url 'admin_panel:ticket_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Nicetek Admin Panel{% endblock %}</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0d47a1;
+            --primary-light: #1976d2;
+            --primary-dark: #0a3a82;
+            --secondary: #1565c0;
+            --accent: #ffc107;
+            --accent-dark: #f9a825;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --sidebar-width: 260px;
+            --header-height: 70px;
+            --border-radius: 12px;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f0f2f5;
+            overflow-x: hidden;
+        }
+        
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(180deg, #0d47a1 0%, #0a3a82 100%);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+        }
+        
+        .sidebar-brand {
+            padding: 1.5rem 1.5rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-brand h2 {
+            color: white;
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .sidebar-brand h2 i {
+            color: var(--accent);
+            margin-right: 8px;
+        }
+        
+        .sidebar-brand small {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.75rem;
+            display: block;
+            margin-top: 4px;
+        }
+        
+        .sidebar-menu {
+            padding: 1rem 0.75rem;
+        }
+        
+        .sidebar-menu .menu-label {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.75rem 1rem 0.5rem;
+            font-weight: 600;
+        }
+        
+        .sidebar-menu .nav-item {
+            list-style: none;
+        }
+        
+        .sidebar-menu .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.7rem 1rem;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 2px;
+            position: relative;
+        }
+        
+        .sidebar-menu .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            transform: translateX(4px);
+        }
+        
+        .sidebar-menu .nav-link.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+        
+        .sidebar-menu .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .sidebar-menu .nav-link i {
+            width: 24px;
+            text-align: center;
+            margin-right: 12px;
+            font-size: 1rem;
+        }
+        
+        .sidebar-menu .nav-link .badge {
+            margin-left: auto;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+        }
+        
+        .sidebar-menu .nav-link .badge.bg-danger {
+            background: var(--danger) !important;
+        }
+        .sidebar-menu .nav-link .badge.bg-success {
+            background: var(--success) !important;
+        }
+        .sidebar-menu .nav-link .badge.bg-warning {
+            background: var(--warning) !important;
+            color: #000;
+        }
+        
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-footer .nav-link {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-footer .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .sidebar-footer .nav-link i {
+            margin-right: 12px;
+            width: 20px;
+        }
+        
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+        
+        /* ===== HEADER ===== */
+        .top-header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: var(--header-height);
+        }
+        
+        .top-header .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .top-header .header-left .toggle-sidebar {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        .top-header .header-left .page-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 0;
+        }
+        
+        .top-header .header-left .page-title small {
+            font-weight: 400;
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin-left: 8px;
+        }
+        
+        .top-header .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .top-header .header-right .search-box {
+            position: relative;
+        }
+        
+        .top-header .header-right .search-box input {
+            padding: 0.4rem 1rem 0.4rem 2.5rem;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            width: 250px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .top-header .header-right .search-box input:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(13, 71, 161, 0.1);
+            outline: none;
+        }
+        
+        .top-header .header-right .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+        }
+        
+        .top-header .header-right .notifications {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .top-header .header-right .notifications .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
+        }
+        
+        .top-header .header-right .user-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.3rem 0.8rem 0.3rem 0.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+        
+        .top-header .header-right .user-dropdown:hover {
+            background: #f8f9fa;
+        }
+        
+        .top-header .header-right .user-dropdown .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        .top-header .header-right .user-dropdown .user-info {
+            line-height: 1.2;
+        }
+        
+        .top-header .header-right .user-dropdown .user-info .name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .top-header .header-right .user-dropdown .user-info .role {
+            font-size: 0.7rem;
+            color: #6c757d;
+        }
+        
+        /* ===== PAGE CONTENT ===== */
+        .page-content {
+            padding: 2rem;
+        }
+        
+        /* ===== STATS CARDS ===== */
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
+            height: 100%;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .stat-card .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .stat-card .stat-icon.primary { background: rgba(13, 71, 161, 0.1); color: var(--primary); }
+        .stat-card .stat-icon.success { background: rgba(40, 167, 69, 0.1); color: var(--success); }
+        .stat-card .stat-icon.warning { background: rgba(255, 193, 7, 0.1); color: var(--warning); }
+        .stat-card .stat-icon.danger { background: rgba(220, 53, 69, 0.1); color: var(--danger); }
+        .stat-card .stat-icon.info { background: rgba(23, 162, 184, 0.1); color: var(--info); }
+        
+        .stat-card .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+        
+        .stat-card .stat-label {
+            color: #6c757d;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .stat-card.border-success { border-left-color: var(--success); }
+        .stat-card.border-warning { border-left-color: var(--warning); }
+        .stat-card.border-danger { border-left-color: var(--danger); }
+        .stat-card.border-info { border-left-color: var(--info); }
+        
+        /* ===== CARDS ===== */
+        .card-custom {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: none;
+            overflow: hidden;
+        }
+        
+        .card-custom .card-header {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-custom .card-header .card-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin: 0;
+        }
+        
+        .card-custom .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-custom .card-footer {
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 1rem 1.5rem;
+        }
+        
+        /* ===== TABLES ===== */
+        .table-custom {
+            margin-bottom: 0;
+        }
+        
+        .table-custom thead th {
+            background: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e9ecef;
+            padding: 0.75rem 1rem;
+        }
+        
+        .table-custom tbody td {
+            padding: 0.75rem 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 0.9rem;
+        }
+        
+        .table-custom tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .table-custom .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .table-custom .status-badge.success { background: #d4edda; color: #155724; }
+        .table-custom .status-badge.danger { background: #f8d7da; color: #721c24; }
+        .table-custom .status-badge.warning { background: #fff3cd; color: #856404; }
+        .table-custom .status-badge.info { background: #d1ecf1; color: #0c5460; }
+        .table-custom .status-badge.secondary { background: #e2e3e5; color: #383d41; }
+        
+        .table-custom .action-btns .btn {
+            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 6px;
+        }
+        
+        /* ===== FORMS ===== */
+        .form-custom .form-control,
+        .form-custom .form-select {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            padding: 0.6rem 1rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .form-custom .form-control:focus,
+        .form-custom .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(13, 71, 161, 0.1);
+        }
+        
+        .form-custom .form-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #495057;
+        }
+        
+        .form-custom .form-text {
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+        
+        /* ===== BUTTONS ===== */
+        .btn-primary-custom {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom:hover {
+            background: var(--primary-dark);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+        }
+        
+        .btn-success-custom {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success-custom:hover {
+            background: #218838;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger-custom {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger-custom:hover {
+            background: #c82333;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* ===== PAGINATION ===== */
+        .pagination-custom .page-link {
+            border: none;
+            color: var(--primary);
+            border-radius: 8px;
+            padding: 0.4rem 0.9rem;
+            margin: 0 2px;
+            font-weight: 500;
+        }
+        
+        .pagination-custom .page-link:hover {
+            background: rgba(13, 71, 161, 0.1);
+        }
+        
+        .pagination-custom .page-item.active .page-link {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .top-header .header-left .toggle-sidebar {
+                display: block;
+            }
+            
+            .top-header .header-right .search-box input {
+                width: 150px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-header {
+                padding: 0.75rem 1rem;
+            }
+            
+            .top-header .header-right .search-box input {
+                width: 120px;
+                font-size: 0.75rem;
+            }
+            
+            .top-header .header-right .user-dropdown .user-info {
+                display: none;
+            }
+            
+            .page-content {
+                padding: 1rem;
+            }
+            
+            .stat-card .stat-number {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* ===== UTILITY ===== */
+        .text-truncate-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .image-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .image-thumb-sm {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.8);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading-overlay .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e9ecef;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .toast-container-custom {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    
+    <!-- ===== SIDEBAR ===== -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h2><i class="fas fa-crown"></i> Nicetek</h2>
+            <small>Admin Panel</small>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li class="menu-label">Main</li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:dashboard' %}" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </a>
+            </li>
+            
+            <li class="menu-label">Content</li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:package_list' %}" class="nav-link {% if active_page == 'packages' %}active{% endif %}">
+                    <i class="fas fa-box"></i> Packages
+                    <span class="badge">{{ package_count|default:0 }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:service_list' %}" class="nav-link {% if active_page == 'services' %}active{% endif %}">
+                    <i class="fas fa-cogs"></i> Services
+                    <span class="badge">{{ service_count|default:0 }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:portfolio_list' %}" class="nav-link {% if active_page == 'portfolio' %}active{% endif %}">
+                    <i class="fas fa-briefcase"></i> Portfolio
+                    <span class="badge">{{ portfolio_count|default:0 }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:blog_list' %}" class="nav-link {% if active_page == 'blog' %}active{% endif %}">
+                    <i class="fas fa-blog"></i> Blog Posts
+                    <span class="badge">{{ blog_count|default:0 }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:testimonial_list' %}" class="nav-link {% if active_page == 'testimonials' %}active{% endif %}">
+                    <i class="fas fa-star"></i> Testimonials
+                    <span class="badge">{{ testimonial_count|default:0 }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:faq_list' %}" class="nav-link {% if active_page == 'faqs' %}active{% endif %}">
+                    <i class="fas fa-question-circle"></i> FAQs
+                    <span class="badge">{{ faq_count|default:0 }}</span>
+                </a>
+            </li>
+            
+            <li class="menu-label">Clients</li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:client_list' %}" class="nav-link {% if active_page == 'clients' %}active{% endif %}">
+                    <i class="fas fa-users"></i> Clients
+                    <span class="badge">{{ client_count|default:0 }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:project_list' %}" class="nav-link {% if active_page == 'projects' %}active{% endif %}">
+                    <i class="fas fa-project-diagram"></i> Projects
+                    <span class="badge">{{ project_count|default:0 }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:ticket_list' %}" class="nav-link {% if active_page == 'tickets' %}active{% endif %}">
+                    <i class="fas fa-ticket-alt"></i> Support Tickets
+                    <span class="badge bg-danger">{{ ticket_count|default:0 }}</span>
+                </a>
+            </li>
+            
+            <li class="menu-label">System</li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:quote_list' %}" class="nav-link {% if active_page == 'quotes' %}active{% endif %}">
+                    <i class="fas fa-file-signature"></i> Quote Requests
+                    <span class="badge bg-warning">{{ quote_count|default:0 }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:contact_list' %}" class="nav-link {% if active_page == 'contacts' %}active{% endif %}">
+                    <i class="fas fa-envelope"></i> Contact Messages
+                    <span class="badge bg-danger">{{ contact_count|default:0 }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:subscriber_list' %}" class="nav-link {% if active_page == 'subscribers' %}active{% endif %}">
+                    <i class="fas fa-newspaper"></i> Subscribers
+                    <span class="badge">{{ subscriber_count|default:0 }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_panel:team_list' %}" class="nav-link {% if active_page == 'team' %}active{% endif %}">
+                    <i class="fas fa-user-tie"></i> Team Members
+                    <span class="badge">{{ team_count|default:0 }}</span>
+                </a>
+            </li>
+	    {% if user.can_manage_users %}
+<li class="menu-label">Administration</li>
+<li class="nav-item">
+    <a href="{% url 'accounts:user_list' %}" class="nav-link {% if active_page == 'users' %}active{% endif %}">
+        <i class="fas fa-users-cog"></i> User Management
+    </a>
+</li>
+{% endif %}
+        </ul>
+        
+        <div class="sidebar-footer">
+            <a href="{% url 'core:home' %}" target="_blank" class="nav-link">
+                <i class="fas fa-external-link-alt"></i> View Site
+            </a>
+            <a href="{% url 'accounts:logout' %}" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </nav>
+    
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title">
+                    {% block page_title %}Dashboard{% endblock %}
+                    <small>{% block page_subtitle %}{% endblock %}</small>
+                </h1>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search..." id="globalSearch">
+                </div>
+                <div class="notifications">
+                    <i class="fas fa-bell fa-lg" style="color:#6c757d;"></i>
+                    <span class="badge bg-danger">{{ notification_count|default:0 }}</span>
+                </div>
+                <div class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="avatar">{{ user.username|slice:":1"|upper }}</div>
+                    <div class="user-info">
+                        <div class="name">{{ user.get_full_name|default:user.username }}</div>
+                        <div class="role">Administrator</div>
+                    </div>
+                    <i class="fas fa-chevron-down" style="font-size:0.7rem;color:#adb5bd;"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </header>
+        
+        <!-- Page Content -->
+        <div class="page-content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container-custom" id="toastContainer"></div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Toggle Sidebar
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+        
+        // Close sidebar on outside click (mobile)
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.getElementById('toggleSidebar');
+            if (window.innerWidth <= 992) {
+                if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+        
+        // Global Search
+        document.getElementById('globalSearch').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value.trim();
+                if (query) {
+                    window.location.href = '?search=' + encodeURIComponent(query);
+                }
+            }
+        });
+        
+        // Toast notification system
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const colors = {
+                success: '#28a745',
+                danger: '#dc3545',
+                warning: '#ffc107',
+                info: '#17a2b8'
+            };
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast align-items-center text-white border-0 show';
+            toast.style.backgroundColor = colors[type] || colors.success;
+            toast.style.marginBottom = '0.5rem';
+            toast.style.borderRadius = '8px';
+            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+        
+        // Show Django messages as toasts
+        {% if messages %}
+            {% for message in messages %}
+                showToast('{{ message }}', '{% if message.tags == "error" %}danger{% elif message.tags == "warning" %}warning{% elif message.tags == "info" %}info{% else %}success{% endif %}');
+            {% endfor %}
+        {% endif %}
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

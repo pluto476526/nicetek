@@ -1,0 +1,208 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}{{ title|default:"Create Project" }}{% endblock %}
+{% block page_subtitle %}{{ subtitle|default:"Add a new client project" }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-{% if form.instance.pk %}edit{% else %}plus{% endif %} me-2"></i>
+                    {{ title|default:"Create Project" }}
+                </h5>
+                <a href="{% url 'admin_panel:project_list' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+            <div class="card-body">
+                <form method="post" class="form-custom">
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Please fix the following errors:</strong>
+                        <ul class="mb-0">
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                <li>{{ field|title }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Basic Information -->
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-info-circle me-2"></i> Basic Information
+                            </h6>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Client *</label>
+                            <select name="client" class="form-select" required>
+                                <option value="">Select client...</option>
+                                {% for client in clients %}
+                                <option value="{{ client.id }}" 
+                                        {% if form.client.value == client.id %}selected{% endif %}>
+                                    {{ client.company_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Project Name *</label>
+                            <input type="text" name="name" class="form-control" 
+                                   value="{{ form.name.value|default:'' }}" required>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Description *</label>
+                            <textarea name="description" class="form-control" rows="4" required>{{ form.description.value|default:'' }}</textarea>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Service</label>
+                            <select name="service" class="form-select">
+                                <option value="">Select service...</option>
+                                {% for service in services %}
+                                <option value="{{ service.id }}" 
+                                        {% if form.service.value == service.id %}selected{% endif %}>
+                                    {{ service.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Package</label>
+                            <select name="package" class="form-select">
+                                <option value="">Select package...</option>
+                                {% for package in packages %}
+                                <option value="{{ package.id }}" 
+                                        {% if form.package.value == package.id %}selected{% endif %}>
+                                    {{ package.name }} - KSh {{ package.price|floatformat:0 }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Financials -->
+                    <div class="row g-3 mt-3">
+                        <div class="col-12">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-money-bill me-2"></i> Financials
+                            </h6>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Quote Amount (KSh)</label>
+                            <input type="number" name="quote_amount" class="form-control" 
+                                   value="{{ form.quote_amount.value|default:'' }}" step="0.01">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Deposit (KSh)</label>
+                            <input type="number" name="deposit" class="form-control" 
+                                   value="{{ form.deposit.value|default:'0' }}" step="0.01">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Balance (KSh)</label>
+                            <input type="number" name="balance" class="form-control" 
+                                   value="{{ form.balance.value|default:'0' }}" step="0.01">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Payment Status</label>
+                            <select name="payment_status" class="form-select">
+                                <option value="pending" {% if form.payment_status.value == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="partial" {% if form.payment_status.value == 'partial' %}selected{% endif %}>Partial</option>
+                                <option value="paid" {% if form.payment_status.value == 'paid' %}selected{% endif %}>Paid</option>
+                                <option value="overdue" {% if form.payment_status.value == 'overdue' %}selected{% endif %}>Overdue</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Status & Timeline -->
+                    <div class="row g-3 mt-3">
+                        <div class="col-12">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-tasks me-2"></i> Status & Timeline
+                            </h6>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="planning" {% if form.status.value == 'planning' %}selected{% endif %}>Planning</option>
+                                <option value="in_progress" {% if form.status.value == 'in_progress' %}selected{% endif %}>In Progress</option>
+                                <option value="completed" {% if form.status.value == 'completed' %}selected{% endif %}>Completed</option>
+                                <option value="on_hold" {% if form.status.value == 'on_hold' %}selected{% endif %}>On Hold</option>
+                                <option value="cancelled" {% if form.status.value == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Priority</label>
+                            <select name="priority" class="form-select">
+                                <option value="low" {% if form.priority.value == 'low' %}selected{% endif %}>Low</option>
+                                <option value="medium" {% if form.priority.value == 'medium' or not form.priority.value %}selected{% endif %}>Medium</option>
+                                <option value="high" {% if form.priority.value == 'high' %}selected{% endif %}>High</option>
+                                <option value="urgent" {% if form.priority.value == 'urgent' %}selected{% endif %}>Urgent</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Installation Address *</label>
+                            <textarea name="installation_address" class="form-control" rows="3" required>{{ form.installation_address.value|default:'' }}</textarea>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label class="form-label">Timeline *</label>
+                            <input type="text" name="timeline" class="form-control" 
+                                   value="{{ form.timeline.value|default:'' }}" 
+                                   placeholder="e.g., 2-3 weeks" required>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" name="start_date" class="form-control" 
+                                   value="{{ form.start_date.value|date:'Y-m-d'|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Expected Completion</label>
+                            <input type="date" name="expected_completion" class="form-control" 
+                                   value="{{ form.expected_completion.value|date:'Y-m-d'|default:'' }}">
+                        </div>
+                        
+                        {% if form.instance.pk %}
+                        <div class="col-md-4">
+                            <label class="form-label">Actual Completion</label>
+                            <input type="date" name="actual_completion" class="form-control" 
+                                   value="{{ form.actual_completion.value|date:'Y-m-d'|default:'' }}">
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save"></i> Save Project
+                        </button>
+                        <a href="{% url 'admin_panel:project_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

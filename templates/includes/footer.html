@@ -1,0 +1,89 @@
+<footer class="footer bg-dark text-white pt-5 pb-4 mt-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                {% if company.logo %}
+                <img src="{{ company.logo.url }}" alt="{{ company.name }}" height="40" class="mb-3">
+                {% else %}
+                <h4 class="fw-bold">{{ company.name|default:"Nicetek Kenya" }}</h4>
+                {% endif %}
+                <p class="text-white-50">{{ company.tagline|default:"Your Trusted Technology Partner" }}</p>
+                <div class="social-links mt-3">
+                    <a href="{{ company.facebook_url|default:'#' }}" class="text-white me-2" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="{{ company.twitter_url|default:'#' }}" class="text-white me-2" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="{{ company.linkedin_url|default:'#' }}" class="text-white me-2" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="{{ company.instagram_url|default:'#' }}" class="text-white me-2" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="{{ company.youtube_url|default:'#' }}" class="text-white" target="_blank"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="col-lg-2">
+                <h5 class="text-white mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="{% url 'core:home' %}" class="text-white-50 text-decoration-none">Home</a></li>
+                    <li class="mb-2"><a href="{% url 'services:list' %}" class="text-white-50 text-decoration-none">Services</a></li>
+                    <li class="mb-2"><a href="{% url 'packages:list' %}" class="text-white-50 text-decoration-none">Packages</a></li>
+                    <li class="mb-2"><a href="{% url 'portfolio:list' %}" class="text-white-50 text-decoration-none">Portfolio</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:list' %}" class="text-white-50 text-decoration-none">Blog</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-3">
+                <h5 class="text-white mb-3">Contact Info</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2 text-white-50">
+                        <i class="fas fa-phone me-2"></i> {{ company.phone|default:SITE_PHONE }}
+                    </li>
+                    <li class="mb-2 text-white-50">
+                        <i class="fas fa-envelope me-2"></i> {{ company.email|default:SITE_EMAIL }}
+                    </li>
+                    <li class="mb-2 text-white-50">
+                        <i class="fas fa-location-dot me-2"></i> {{ company.address|default:SITE_ADDRESS }}
+                    </li>
+                    {% if company.whatsapp_number %}
+                    <li class="mb-2">
+                        <a href="https://wa.me/{{ company.whatsapp_number }}" target="_blank" class="btn btn-success btn-sm">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+            <div class="col-lg-3">
+                <h5 class="text-white mb-3">Newsletter</h5>
+                <p class="text-white-50">Subscribe for updates and offers</p>
+                <form action="{% url 'core:newsletter_subscribe' %}" method="POST" class="d-flex">
+                    {% csrf_token %}
+                    <input type="email" name="email" class="form-control me-2" placeholder="Your email" required>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <hr class="my-4 border-secondary">
+        
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="text-white-50 mb-0">
+                    &copy; {{ now.year }} {{ company.name|default:"Nicetek Kenya" }}. All rights reserved.
+                </p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <a href="{% url 'core:legal' 'privacy' %}" class="text-white-50 text-decoration-none">Privacy Policy</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="{% url 'core:legal' 'terms' %}" class="text-white-50 text-decoration-none">Terms of Service</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="{% url 'core:legal' 'cookies' %}" class="text-white-50 text-decoration-none">Cookie Policy</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>

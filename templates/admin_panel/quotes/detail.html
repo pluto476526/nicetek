@@ -1,0 +1,104 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}Quote Request{% endblock %}
+{% block page_subtitle %}From {{ quote.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-info-circle me-2"></i> Quote Details</h5>
+                <div>
+                    <a href="{% url 'admin_panel:quote_update' quote.id %}" class="btn btn-success-custom btn-sm">
+                        <i class="fas fa-edit"></i> Update Status
+                    </a>
+                    <a href="{% url 'admin_panel:quote_delete' quote.id %}" class="btn btn-danger-custom btn-sm">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <h6>Client Information</h6>
+                        <dl>
+                            <dt>Name</dt>
+                            <dd>{{ quote.name }}</dd>
+                            <dt>Email</dt>
+                            <dd>{{ quote.email }}</dd>
+                            <dt>Phone</dt>
+                            <dd>{{ quote.phone }}</dd>
+                            <dt>Company</dt>
+                            <dd>{{ quote.company|default:"-" }}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Project Information</h6>
+                        <dl>
+                            <dt>Service Type</dt>
+                            <dd><span class="badge bg-primary">{{ quote.get_service_type_display }}</span></dd>
+                            <dt>Package</dt>
+                            <dd>{{ quote.package.name|default:"Custom" }}</dd>
+                            <dt>Budget</dt>
+                            <dd><strong>{{ quote.get_budget_display }}</strong></dd>
+                            <dt>Timeline</dt>
+                            <dd>{{ quote.get_timeline_display }}</dd>
+                            <dt>Status</dt>
+                            <dd>
+                                <span class="status-badge {% if quote.status == 'accepted' %}success{% elif quote.status == 'quoted' %}info{% elif quote.status == 'pending' %}warning{% else %}secondary{% endif %}">
+                                    {{ quote.get_status_display }}
+                                </span>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <h6>Project Details</h6>
+                <div class="bg-light p-3 rounded">
+                    {{ quote.project_details|linebreaks }}
+                </div>
+                
+                {% if quote.notes %}
+                <h6 class="mt-3">Notes</h6>
+                <div class="bg-light p-3 rounded">
+                    {{ quote.notes|linebreaks }}
+                </div>
+                {% endif %}
+                
+                <div class="mt-3">
+                    <small class="text-muted">Submitted: {{ quote.created_at|date:"M d, Y H:i" }}</small>
+                    <br>
+                    <small class="text-muted">Last Updated: {{ quote.updated_at|date:"M d, Y H:i" }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-link me-2"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="mailto:{{ quote.email }}" class="btn btn-primary-custom">
+                        <i class="fas fa-envelope"></i> Reply via Email
+                    </a>
+                    <a href="tel:{{ quote.phone }}" class="btn btn-success-custom">
+                        <i class="fas fa-phone"></i> Call Client
+                    </a>
+                    <a href="{% url 'admin_panel:quote_update' quote.id %}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Update Status
+                    </a>
+                    <a href="{% url 'admin_panel:quote_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

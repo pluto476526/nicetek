@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ project.title }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="portfolio-detail py-5">
+    <div class="container">
+        <!-- Hero Image -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <img src="{{ project.image.url }}" alt="{{ project.title }}" class="img-fluid rounded-3 shadow-sm">
+            </div>
+        </div>
+        
+        <!-- Project Info -->
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-3">{{ project.title }}</h1>
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    <span class="badge bg-primary">{{ project.get_industry_display }}</span>
+                    <span class="badge bg-secondary">Client: {{ project.client }}</span>
+                    <span class="badge bg-info">Completed: {{ project.completion_date|date:"M Y" }}</span>
+                </div>
+                
+                <div class="project-content">
+                    <h5 class="fw-bold">Project Overview</h5>
+                    {{ project.description|safe }}
+                    
+                    <h5 class="fw-bold mt-4">The Challenge</h5>
+                    {{ project.challenge|safe }}
+                    
+                    <h5 class="fw-bold mt-4">Our Solution</h5>
+                    {{ project.solution|safe }}
+                    
+                    <h5 class="fw-bold mt-4">Results</h5>
+                    {{ project.results|safe }}
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card shadow-sm sticky-top" style="top:80px;">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Project Details</h5>
+                        <hr>
+                        <dl class="row">
+                            <dt class="col-sm-6">Client</dt>
+                            <dd class="col-sm-6">{{ project.client }}</dd>
+                            
+                            <dt class="col-sm-6">Industry</dt>
+                            <dd class="col-sm-6">{{ project.get_industry_display }}</dd>
+                            
+                            <dt class="col-sm-6">Completion</dt>
+                            <dd class="col-sm-6">{{ project.completion_date|date:"M Y" }}</dd>
+                            
+                            <dt class="col-sm-6">Views</dt>
+                            <dd class="col-sm-6">{{ project.views_count }}</dd>
+                        </dl>
+                        
+                        {% if project.technologies_used %}
+                        <h6 class="fw-bold mt-3">Technologies Used</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for tech in project.technologies_used %}
+                            <span class="badge bg-light text-dark">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        {% if project.website_url %}
+                        <a href="{{ project.website_url }}" target="_blank" class="btn btn-primary w-100 mt-3">
+                            <i class="fas fa-external-link-alt"></i> Visit Website
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Testimonials -->
+        {% if project.testimonials.all %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">Client Testimonial</h3>
+                <div class="row justify-content-center">
+                    {% for testimonial in project.testimonials.all %}
+                    <div class="col-md-8">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <i class="fas fa-quote-left fa-2x text-primary opacity-50 mb-3"></i>
+                                <p class="lead">"{{ testimonial.content }}"</p>
+                                <footer class="blockquote-footer">
+                                    {{ testimonial.author }}, {{ testimonial.role }}
+                                </footer>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Related Projects -->
+        {% if related_projects %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">Related Projects</h3>
+                <div class="row g-4">
+                    {% for related in related_projects %}
+                    <div class="col-md-4">
+                        <div class="card h-100 shadow-sm">
+                            <img src="{{ related.image.url }}" alt="{{ related.title }}" class="card-img-top" style="height:200px;object-fit:cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ related.title }}</h5>
+                                <p class="card-text text-muted small">{{ related.description|striptags|truncatechars:100 }}</p>
+                                <a href="{% url 'portfolio:detail' related.slug %}" class="btn btn-outline-primary btn-sm">View Project</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

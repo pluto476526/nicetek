@@ -1,0 +1,97 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}Newsletter Subscribers{% endblock %}
+{% block page_subtitle %}Manage all subscribers{% endblock %}
+
+{% block content %}
+<div class="card-custom">
+    <div class="card-header">
+        <h5 class="card-title"><i class="fas fa-newspaper me-2"></i> All Subscribers</h5>
+        <div>
+            <button class="btn btn-success-custom btn-sm" onclick="exportSubscribers()">
+                <i class="fas fa-download"></i> Export CSV
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Confirmed</th>
+                        <th>Subscribed</th>
+                        <th style="width:100px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for subscriber in subscribers %}
+                    <tr>
+                        <td>
+                            <strong>{{ subscriber.email }}</strong>
+                        </td>
+                        <td>
+                            <span class="status-badge {% if subscriber.is_active %}success{% else %}secondary{% endif %}">
+                                {{ subscriber.is_active|yesno:"Active,Inactive" }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge {% if subscriber.confirmed %}success{% else %}warning{% endif %}">
+                                {{ subscriber.confirmed|yesno:"Yes,No" }}
+                            </span>
+                        </td>
+                        <td>{{ subscriber.subscribed_date|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="action-btns d-flex gap-1">
+                                <a href="{% url 'admin_panel:subscriber_delete' subscriber.id %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-4">
+                            <i class="fas fa-newspaper fa-2x text-muted mb-2 d-block"></i>
+                            <p class="text-muted">No subscribers found.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if is_paginated %}
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries</small>
+            <nav>
+                <ul class="pagination pagination-custom mb-0">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                    </li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function exportSubscribers() {
+    window.location.href = '{% url "admin_panel:subscriber_export" %}';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}{{ package.name }}{% endblock %}
+{% block page_subtitle %}Package Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-box me-2"></i> Package Information</h5>
+                <div>
+                    <a href="{% url 'admin_panel:package_update' package.id %}" class="btn btn-success-custom btn-sm">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a href="{% url 'admin_panel:package_delete' package.id %}" class="btn btn-danger-custom btn-sm">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4 text-center">
+                        {% if package.image %}
+                        <img src="{{ package.image.url }}" alt="{{ package.name }}" 
+                             class="img-fluid rounded" style="max-height:300px;">
+                        {% else %}
+                        <div class="bg-light rounded p-5 text-muted">
+                            <i class="fas fa-image fa-3x"></i>
+                            <p>No image</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <dl class="row">
+                            <dt class="col-sm-4">Name</dt>
+                            <dd class="col-sm-8">{{ package.name }}</dd>
+                            
+                            <dt class="col-sm-4">Category</dt>
+                            <dd class="col-sm-8">{{ package.category.name|default:"-" }}</dd>
+                            
+                            <dt class="col-sm-4">Price</dt>
+                            <dd class="col-sm-8">
+                                <span class="fw-bold text-success fs-5">KSh {{ package.price|floatformat:0 }}</span>
+                                {% if package.original_price %}
+                                <span class="text-decoration-line-through text-muted ms-2">
+                                    KSh {{ package.original_price|floatformat:0 }}
+                                </span>
+                                {% endif %}
+                            </dd>
+                            
+                            <dt class="col-sm-4">Status</dt>
+                            <dd class="col-sm-8">
+                                <span class="status-badge {% if package.published %}success{% else %}secondary{% endif %}">
+                                    {{ package.published|yesno:"Published,Draft" }}
+                                </span>
+                                {% if package.is_featured %}
+                                <span class="badge bg-warning text-dark ms-1">Featured</span>
+                                {% endif %}
+                                {% if package.is_recommended %}
+                                <span class="badge bg-success ms-1">Recommended</span>
+                                {% endif %}
+                                {% if package.is_best_value %}
+                                <span class="badge bg-info ms-1">Best Value</span>
+                                {% endif %}
+                            </dd>
+                            
+                            <dt class="col-sm-4">Timeline</dt>
+                            <dd class="col-sm-8">{{ package.timeline|default:"-" }}</dd>
+                            
+                            <dt class="col-sm-4">Created</dt>
+                            <dd class="col-sm-8">{{ package.created_at|date:"M d, Y H:i" }}</dd>
+                            
+                            <dt class="col-sm-4">Last Updated</dt>
+                            <dd class="col-sm-8">{{ package.updated_at|date:"M d, Y H:i" }}</dd>
+                        </dl>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <h6>Description</h6>
+                <div class="bg-light p-3 rounded mb-3">
+                    {{ package.description|safe }}
+                </div>
+                
+                {% if package.detailed_description %}
+                <h6>Detailed Description</h6>
+                <div class="bg-light p-3 rounded mb-3">
+                    {{ package.detailed_description|safe }}
+                </div>
+                {% endif %}
+                
+                {% if package.deliverables %}
+                <h6>Deliverables</h6>
+                <ul class="list-group mb-3">
+                    {% for item in package.deliverables %}
+                    <li class="list-group-item">
+                        <i class="fas fa-check-circle text-success me-2"></i> {{ item }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                
+                {% if package.installation_details %}
+                <h6>Installation Details</h6>
+                <div class="bg-light p-3 rounded mb-3">
+                    {{ package.installation_details|safe }}
+                </div>
+                {% endif %}
+                
+                {% if package.support_details %}
+                <h6>Support Details</h6>
+                <div class="bg-light p-3 rounded mb-3">
+                    {{ package.support_details|safe }}
+                </div>
+                {% endif %}
+                
+                {% if package.warranty %}
+                <h6>Warranty</h6>
+                <p>{{ package.warranty }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card-custom mb-3">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-link me-2"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'admin_panel:package_update' package.id %}" class="btn btn-success-custom">
+                        <i class="fas fa-edit"></i> Edit Package
+                    </a>
+                    <a href="{% url 'admin_panel:package_delete' package.id %}" class="btn btn-danger-custom">
+                        <i class="fas fa-trash"></i> Delete Package
+                    </a>
+                    {% if package.published %}
+                    <a href="{% url 'packages:detail' package.slug %}" target="_blank" class="btn btn-primary-custom">
+                        <i class="fas fa-external-link-alt"></i> View on Site
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'admin_panel:package_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-chart-simple me-2"></i> Statistics</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Projects Using</span>
+                    <span class="fw-bold">{{ package.projects.count|default:0 }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

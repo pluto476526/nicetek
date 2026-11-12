@@ -1,0 +1,221 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}Users{% endblock %}
+{% block page_subtitle %}Manage all users and permissions{% endblock %}
+
+{% block content %}
+<!-- Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-number">{{ total_users }}</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-icon primary"><i class="fas fa-users"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card border-danger">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-number">{{ admin_count }}</div>
+                    <div class="stat-label">Administrators</div>
+                </div>
+                <div class="stat-icon danger"><i class="fas fa-crown"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card border-info">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-number">{{ staff_count }}</div>
+                    <div class="stat-label">Staff</div>
+                </div>
+                <div class="stat-icon info"><i class="fas fa-user-tie"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card border-success">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-number">{{ client_count }}</div>
+                    <div class="stat-label">Clients</div>
+                </div>
+                <div class="stat-icon success"><i class="fas fa-user"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-custom">
+    <div class="card-header">
+        <h5 class="card-title"><i class="fas fa-users me-2"></i> All Users</h5>
+        <a href="{% url 'accounts:user_create' %}" class="btn btn-primary-custom btn-sm">
+            <i class="fas fa-plus"></i> Add User
+        </a>
+    </div>
+    <div class="card-body">
+        <!-- Filters -->
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <form method="get" class="d-flex gap-2">
+                    <input type="text" name="search" class="form-control form-control-sm" 
+                           placeholder="Search users..." value="{{ request.GET.search }}">
+                    <button type="submit" class="btn btn-primary-custom btn-sm">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-3">
+                <select name="role" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">All Roles</option>
+                    {% for code, label in role_choices %}
+                    <option value="{{ code }}" {% if request.GET.role == code %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">All Status</option>
+                    <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>Active</option>
+                    <option value="inactive" {% if request.GET.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                </select>
+            </div>
+            <div class="col-md-2 text-end">
+                <a href="{% url 'accounts:user_list' %}" class="btn btn-outline-secondary btn-sm">Clear</a>
+            </div>
+        </div>
+        
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>Avatar</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Last Login</th>
+                        <th style="width:150px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr>
+                        <td>
+                            <img src="{{ u.avatar_url }}" alt="{{ u.get_full_name }}" 
+                                 class="image-thumb-sm rounded-circle">
+                        </td>
+                        <td>
+                            <strong>{{ u.get_full_name }}</strong>
+                            {% if u.company %}
+                            <br><small class="text-muted">{{ u.company }}</small>
+                            {% endif %}
+                        </td>
+                        <td>{{ u.email }}</td>
+                        <td>
+                            <span class="badge bg-{% if u.role == 'admin' %}danger{% elif u.role == 'staff' %}primary{% elif u.role == 'client' %}info{% else %}secondary{% endif %}">
+                                {{ u.get_role_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge {% if u.is_active %}success{% else %}secondary{% endif %}">
+                                {{ u.is_active|yesno:"Active,Inactive" }}
+                            </span>
+                            {% if u.is_locked %}
+                            <span class="badge bg-warning text-dark ms-1">Locked</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if u.last_login %}
+                            {{ u.last_login|date:"M d, Y" }}
+                            {% else %}
+                            <span class="text-muted">Never</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="action-btns d-flex gap-1">
+                                <a href="{% url 'accounts:user_detail' u.id %}" class="btn btn-sm btn-outline-primary" title="View">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'accounts:user_update' u.id %}" class="btn btn-sm btn-outline-success" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form method="post" action="{% url 'accounts:user_toggle_active' u.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-{% if u.is_active %}warning{% else %}success{% endif %}" 
+                                            title="{% if u.is_active %}Deactivate{% else %}Activate{% endif %}">
+                                        <i class="fas fa-{% if u.is_active %}ban{% else %}check{% endif %}"></i>
+                                    </button>
+                                </form>
+                                <a href="#" onclick="confirmDelete('{{ u.id }}', '{{ u.email }}')" class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                                <form id="delete-form-{{ u.id }}" method="post" action="{% url 'accounts:user_delete' u.id %}" style="display: none;">
+                                    {% csrf_token %}
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-4">
+                            <i class="fas fa-users fa-2x text-muted mb-2 d-block"></i>
+                            <p class="text-muted">No users found.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries</small>
+            <nav>
+                <ul class="pagination pagination-custom mb-0">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.role %}&role={{ request.GET.role }}{% endif %}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.role %}&role={{ request.GET.role }}{% endif %}">
+                            {{ num }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.role %}&role={{ request.GET.role }}{% endif %}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function confirmDelete(userId, email) {
+    if (confirm('Are you sure you want to delete the user "' + email + '"?\n\nThis action cannot be undone!')) {
+        document.getElementById('delete-form-' + userId).submit();
+    }
+}
+</script>
+{% endblock %}

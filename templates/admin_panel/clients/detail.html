@@ -1,0 +1,101 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}{{ client.company_name }}{% endblock %}
+{% block page_subtitle %}Client Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-info-circle me-2"></i> Client Information</h5>
+                <div>
+                    <a href="{% url 'admin_panel:client_update' client.id %}" class="btn btn-success-custom btn-sm">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a href="{% url 'admin_panel:client_delete' client.id %}" class="btn btn-danger-custom btn-sm">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4 text-center">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width:120px;height:120px;font-size:3rem;font-weight:700;">
+                            {{ client.company_name|slice:":1"|upper }}
+                        </div>
+                        <h5 class="mt-2">{{ client.company_name }}</h5>
+                        <span class="badge bg-secondary">{{ client.get_business_type_display }}</span>
+                    </div>
+                    <div class="col-md-8">
+                        <dl class="row">
+                            <dt class="col-sm-4">Contact Person</dt>
+                            <dd class="col-sm-8">{{ client.user.get_full_name|default:client.user.username }}</dd>
+                            
+                            <dt class="col-sm-4">Email</dt>
+                            <dd class="col-sm-8">{{ client.user.email }}</dd>
+                            
+                            <dt class="col-sm-4">Phone</dt>
+                            <dd class="col-sm-8">{{ client.phone }}</dd>
+                            
+                            <dt class="col-sm-4">Tax ID</dt>
+                            <dd class="col-sm-8">{{ client.tax_id|default:"-" }}</dd>
+                            
+                            <dt class="col-sm-4">Location</dt>
+                            <dd class="col-sm-8">{{ client.town }}, {{ client.county }}</dd>
+                            
+                            <dt class="col-sm-4">Address</dt>
+                            <dd class="col-sm-8">{{ client.address|default:"-" }}</dd>
+                            
+                            <dt class="col-sm-4">Member Since</dt>
+                            <dd class="col-sm-8">{{ client.created_at|date:"M d, Y" }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card-custom mb-3">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-project-diagram me-2"></i> Projects</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Total Projects</span>
+                    <span class="fw-bold">{{ client.projects.count }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">In Progress</span>
+                    <span class="fw-bold">{{ client.projects.filter.status.in_progress.count|default:0 }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2">
+                    <span class="text-muted">Completed</span>
+                    <span class="fw-bold">{{ client.projects.filter.status.completed.count|default:0 }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-ticket-alt me-2"></i> Support Tickets</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Total Tickets</span>
+                    <span class="fw-bold">{{ client.tickets.count }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Open</span>
+                    <span class="fw-bold text-danger">{{ client.tickets.filter.status.open.count|default:0 }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2">
+                    <span class="text-muted">Resolved</span>
+                    <span class="fw-bold text-success">{{ client.tickets.filter.status.resolved.count|default:0 }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

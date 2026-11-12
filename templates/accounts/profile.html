@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Profile - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-4">
+            <!-- Profile Card -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <div class="position-relative d-inline-block mb-3">
+                        <img src="{{ user.avatar_url }}" 
+                             alt="{{ user.get_full_name }}" 
+                             class="rounded-circle"
+                             style="width: 120px; height: 120px; object-fit: cover; border: 4px solid #0d47a1;">
+                        {% if user.role == 'admin' %}
+                        <span class="position-absolute bottom-0 end-0 badge bg-danger rounded-circle p-2" title="Administrator">
+                            <i class="fas fa-crown"></i>
+                        </span>
+                        {% elif user.role == 'staff' %}
+                        <span class="position-absolute bottom-0 end-0 badge bg-primary rounded-circle p-2" title="Staff">
+                            <i class="fas fa-user-tie"></i>
+                        </span>
+                        {% endif %}
+                    </div>
+                    <h5 class="fw-bold mb-1">{{ user.get_full_name }}</h5>
+                    <p class="text-muted small mb-2">{{ user.email }}</p>
+                    <span class="badge bg-{% if user.role == 'admin' %}danger{% elif user.role == 'staff' %}primary{% else %}info{% endif %}">
+                        {{ user.get_role_display }}
+                    </span>
+                    
+                    {% if user.company %}
+                    <p class="mt-3 mb-1"><i class="fas fa-building text-muted"></i> {{ user.company }}</p>
+                    {% endif %}
+                    {% if user.position %}
+                    <p class="mb-1"><i class="fas fa-briefcase text-muted"></i> {{ user.position }}</p>
+                    {% endif %}
+                    {% if user.phone %}
+                    <p class="mb-0"><i class="fas fa-phone text-muted"></i> {{ user.phone }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3">Quick Actions</h6>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'accounts:profile_edit' %}" class="btn btn-outline-primary btn-sm text-start">
+                            <i class="fas fa-user-edit me-2"></i> Edit Profile
+                        </a>
+                        <a href="{% url 'accounts:password_change' %}" class="btn btn-outline-primary btn-sm text-start">
+                            <i class="fas fa-key me-2"></i> Change Password
+                        </a>
+                        {% if user.can_access_admin_panel %}
+                        <a href="{% url 'admin_panel:dashboard' %}" class="btn btn-outline-success btn-sm text-start">
+                            <i class="fas fa-tachometer-alt me-2"></i> Admin Panel
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'clients:dashboard' %}" class="btn btn-outline-info btn-sm text-start">
+                            <i class="fas fa-tachometer-alt me-2"></i> Client Dashboard
+                        </a>
+                        <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger btn-sm text-start">
+                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-8">
+            <!-- Profile Info -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i> Profile Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">First Name</small>
+                            <strong>{{ user.first_name|default:"-" }}</strong>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">Last Name</small>
+                            <strong>{{ user.last_name|default:"-" }}</strong>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">Email</small>
+                            <strong>{{ user.email }}</strong>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">Phone</small>
+                            <strong>{{ user.phone|default:"-" }}</strong>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">Company</small>
+                            <strong>{{ user.company|default:"-" }}</strong>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">Position</small>
+                            <strong>{{ user.position|default:"-" }}</strong>
+                        </div>
+                        {% if user.bio %}
+                        <div class="col-12">
+                            <small class="text-muted d-block">Bio</small>
+                            <p class="mb-0">{{ user.bio }}</p>
+                        </div>
+                        {% endif %}
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">Member Since</small>
+                            <strong>{{ user.date_joined|date:"F d, Y" }}</strong>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">Last Login</small>
+                            <strong>{{ user.last_login|date:"F d, Y H:i"|default:"Never" }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-history me-2"></i> Recent Activity</h5>
+                </div>
+                <div class="card-body">
+                    {% if activities %}
+                    <div class="list-group list-group-flush">
+                        {% for activity in activities %}
+                        <div class="list-group-item px-0 d-flex align-items-center">
+                            <div class="me-3">
+                                <div class="rounded-circle bg-{% if activity.action == 'login' %}success{% elif activity.action == 'logout' %}secondary{% elif activity.action == 'login_failed' %}danger{% else %}primary{% endif %} bg-opacity-10 d-flex align-items-center justify-content-center" 
+                                     style="width: 40px; height: 40px;">
+                                    <i class="fas fa-{% if activity.action == 'login' %}sign-in-alt{% elif activity.action == 'logout' %}sign-out-alt{% elif activity.action == 'login_failed' %}exclamation-triangle{% elif activity.action == 'password_change' %}key{% else %}user-edit{% endif %} text-{% if activity.action == 'login' %}success{% elif activity.action == 'logout' %}secondary{% elif activity.action == 'login_failed' %}danger{% else %}primary{% endif %}"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <strong>{{ activity.get_action_display }}</strong>
+                                {% if activity.description %}
+                                <p class="mb-0 small text-muted">{{ activity.description }}</p>
+                                {% endif %}
+                            </div>
+                            <small class="text-muted">{{ activity.timestamp|timesince }} ago</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center mb-0">No activity yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

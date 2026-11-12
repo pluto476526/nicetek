@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="about-page py-5">
+    <div class="container">
+        <!-- Hero -->
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold">About Nicetek Kenya</h1>
+                <p class="lead text-muted">{{ company.tagline|default:"Your Trusted Technology Partner" }}</p>
+                <p>{{ company.about_text|safe }}</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="{% static 'images/about-hero.svg' %}" alt="About Nicetek" class="img-fluid">
+            </div>
+        </div>
+        
+        <!-- Mission, Vision, Values -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm text-center p-4">
+                    <div class="card-body">
+                        <i class="fas fa-bullseye fa-3x text-primary mb-3"></i>
+                        <h5>Our Mission</h5>
+                        <p class="text-muted">{{ company.mission|safe }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm text-center p-4">
+                    <div class="card-body">
+                        <i class="fas fa-eye fa-3x text-primary mb-3"></i>
+                        <h5>Our Vision</h5>
+                        <p class="text-muted">{{ company.vision|safe }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm text-center p-4">
+                    <div class="card-body">
+                        <i class="fas fa-heart fa-3x text-primary mb-3"></i>
+                        <h5>Our Values</h5>
+                        <p class="text-muted">{{ company.values|safe }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Why Choose Us -->
+        <div class="row mb-5">
+            <div class="col-12 text-center mb-4">
+                <h2 class="section-title">Why Choose Nicetek</h2>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex">
+                    <div class="me-3 text-primary">
+                        <i class="fas fa-check-circle fa-2x"></i>
+                    </div>
+                    <div>
+                        <h6>Integrated Solutions</h6>
+                        <p class="text-muted small">One-stop shop for all your technology needs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex">
+                    <div class="me-3 text-primary">
+                        <i class="fas fa-check-circle fa-2x"></i>
+                    </div>
+                    <div>
+                        <h6>Affordable Pricing</h6>
+                        <p class="text-muted small">Cost-effective packages without compromising quality</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex">
+                    <div class="me-3 text-primary">
+                        <i class="fas fa-check-circle fa-2x"></i>
+                    </div>
+                    <div>
+                        <h6>Local & Fast</h6>
+                        <p class="text-muted small">Nairobi-based with quick response and installation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Team -->
+        {% if team_members %}
+        <div class="row">
+            <div class="col-12 text-center mb-4">
+                <h2 class="section-title">Our Team</h2>
+                <p class="text-muted">Meet the experts behind Nicetek</p>
+            </div>
+            {% for member in team_members %}
+            <div class="col-md-3 col-6 mb-4">
+                <div class="text-center">
+                    <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="rounded-circle mb-2" style="width:120px;height:120px;object-fit:cover;">
+                    <h6 class="mb-0">{{ member.name }}</h6>
+                    <small class="text-muted">{{ member.position }}</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Testimonials -->
+        {% if testimonials %}
+        <div class="row mt-4">
+            <div class="col-12 text-center mb-4">
+                <h2 class="section-title">What Our Clients Say</h2>
+            </div>
+            <div class="row g-4">
+                {% for testimonial in testimonials %}
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="stars mb-2">
+                                {% for i in "12345"|slice:testimonial.rating %}
+                                <i class="fas fa-star text-warning"></i>
+                                {% endfor %}
+                            </div>
+                            <p class="card-text">"{{ testimonial.content|truncatechars:120 }}"</p>
+                            <footer class="blockquote-footer">
+                                <strong>{{ testimonial.author }}</strong>
+                                {% if testimonial.company %}
+                                <span class="text-muted">- {{ testimonial.company }}</span>
+                                {% endif %}
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- CTA -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card bg-primary text-white shadow-lg">
+                    <div class="card-body text-center py-5">
+                        <h3 class="fw-bold">Ready to work with us?</h3>
+                        <p class="opacity-75">Let's discuss your technology needs and find the perfect solution.</p>
+                        <a href="{% url 'core:contact' %}" class="btn btn-warning btn-lg px-5">
+                            <i class="fas fa-envelope"></i> Contact Us Today
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}Team Members{% endblock %}
+{% block page_subtitle %}Manage team members{% endblock %}
+
+{% block content %}
+<div class="card-custom">
+    <div class="card-header">
+        <h5 class="card-title"><i class="fas fa-user-tie me-2"></i> All Team Members</h5>
+        <a href="{% url 'admin_panel:team_create' %}" class="btn btn-primary-custom btn-sm">
+            <i class="fas fa-plus"></i> Add Member
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Status</th>
+                        <th>Order</th>
+                        <th style="width:150px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                    <tr>
+                        <td>
+                            {% if member.photo %}
+                            <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="image-thumb">
+                            {% else %}
+                            <div class="image-thumb bg-light d-flex align-items-center justify-content-center text-muted">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <strong>{{ member.name }}</strong>
+                            <br>
+                            <small class="text-muted">{{ member.bio|striptags|truncatechars:50 }}</small>
+                        </td>
+                        <td>{{ member.position }}</td>
+                        <td>
+                            <span class="status-badge {% if member.active %}success{% else %}secondary{% endif %}">
+                                {{ member.active|yesno:"Active,Inactive" }}
+                            </span>
+                        </td>
+                        <td>{{ member.order }}</td>
+                        <td>
+                            <div class="action-btns d-flex gap-1">
+                                <a href="{% url 'admin_panel:team_update' member.id %}" class="btn btn-sm btn-outline-success">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'admin_panel:team_delete' member.id %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <i class="fas fa-user-tie fa-2x text-muted mb-2 d-block"></i>
+                            <p class="text-muted">No team members found. <a href="{% url 'admin_panel:team_create' %}">Add one</a></p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if is_paginated %}
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries</small>
+            <nav>
+                <ul class="pagination pagination-custom mb-0">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                    </li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

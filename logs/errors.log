@@ -1,0 +1,1229 @@
+"GET / HTTP/1.1" 500 59
+"GET /favicon.ico HTTP/1.1" 500 59
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 172, in render
+    with context.bind_template(self):
+         ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/debug_toolbar/panels/templates/panel.py", line 46, in _request_context_bind_template
+    processors = template.engine.template_context_processors + self._processors
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/utils/functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/engine.py", line 118, in template_context_processors
+    return tuple(import_string(path) for path in context_processors)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/engine.py", line 118, in <genexpr>
+    return tuple(import_string(path) for path in context_processors)
+                 ~~~~~~~~~~~~~^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/utils/module_loading.py", line 15, in cached_import
+    module = import_module(module_path)
+  File "/data/data/com.termux/files/usr/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1395, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1023, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/data/data/com.termux/files/home/projects/nicetek/core/context_processors.py", line 3, in <module>
+    from apps.packages.models import Package
+ModuleNotFoundError: No module named 'apps.packages'
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/sqlite3/base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: core_pageview
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/core/middleware.py", line 16, in __call__
+    PageView.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        url=request.build_absolute_uri(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        referrer=request.META.get('HTTP_REFERER', '')[:500],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/query.py", line 752, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 904, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 996, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 1201, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 1253, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/query.py", line 2166, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/sql/compiler.py", line 1954, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/sqlite3/base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such table: core_pageview
+"GET / HTTP/1.1" 500 160156
+Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/sqlite3/base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: core_pageview
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/core/middleware.py", line 16, in __call__
+    PageView.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        url=request.build_absolute_uri(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        referrer=request.META.get('HTTP_REFERER', '')[:500],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/query.py", line 752, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 904, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 996, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 1201, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 1253, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/query.py", line 2166, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/sql/compiler.py", line 1954, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/sqlite3/base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such table: core_pageview
+"GET /favicon.ico HTTP/1.1" 500 160250
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 172, in render
+    with context.bind_template(self):
+         ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/debug_toolbar/panels/templates/panel.py", line 46, in _request_context_bind_template
+    processors = template.engine.template_context_processors + self._processors
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/utils/functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/engine.py", line 118, in template_context_processors
+    return tuple(import_string(path) for path in context_processors)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/engine.py", line 118, in <genexpr>
+    return tuple(import_string(path) for path in context_processors)
+                 ~~~~~~~~~~~~~^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/utils/module_loading.py", line 15, in cached_import
+    module = import_module(module_path)
+  File "/data/data/com.termux/files/usr/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1395, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1023, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/data/data/com.termux/files/home/projects/nicetek/core/context_processors.py", line 3, in <module>
+    from apps.packages.models import Package
+ModuleNotFoundError: No module named 'apps.packages'
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "core_pageview" does not exist
+LINE 1: INSERT INTO "core_pageview" ("url", "ip_address", "session_k...
+                    ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/core/middleware.py", line 16, in __call__
+    PageView.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        url=request.build_absolute_uri(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        referrer=request.META.get('HTTP_REFERER', '')[:500],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/query.py", line 752, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 904, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 996, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 1201, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 1253, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/query.py", line 2166, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/sql/compiler.py", line 1954, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "core_pageview" does not exist
+LINE 1: INSERT INTO "core_pageview" ("url", "ip_address", "session_k...
+                    ^
+
+"GET / HTTP/1.1" 500 151641
+Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "core_pageview" does not exist
+LINE 1: INSERT INTO "core_pageview" ("url", "ip_address", "session_k...
+                    ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/core/middleware.py", line 16, in __call__
+    PageView.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        url=request.build_absolute_uri(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        referrer=request.META.get('HTTP_REFERER', '')[:500],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/query.py", line 752, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 904, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 996, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 1201, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/base.py", line 1253, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/query.py", line 2166, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/sql/compiler.py", line 1954, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "core_pageview" does not exist
+LINE 1: INSERT INTO "core_pageview" ("url", "ip_address", "session_k...
+                    ^
+
+"GET /favicon.ico HTTP/1.1" 500 151669
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 172, in render
+    with context.bind_template(self):
+         ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/debug_toolbar/panels/templates/panel.py", line 46, in _request_context_bind_template
+    processors = template.engine.template_context_processors + self._processors
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/utils/functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/engine.py", line 118, in template_context_processors
+    return tuple(import_string(path) for path in context_processors)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/engine.py", line 118, in <genexpr>
+    return tuple(import_string(path) for path in context_processors)
+                 ~~~~~~~~~~~~~^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/utils/module_loading.py", line 15, in cached_import
+    module = import_module(module_path)
+  File "/data/data/com.termux/files/usr/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1395, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1023, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/data/data/com.termux/files/home/projects/nicetek/core/context_processors.py", line 3, in <module>
+    from apps.packages.models import Package
+ModuleNotFoundError: No module named 'apps.packages'
+"GET / HTTP/1.1" 500 151865
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 172, in render
+    with context.bind_template(self):
+         ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/debug_toolbar/panels/templates/panel.py", line 51, in _request_context_bind_template
+    context = processor(self.request)
+  File "/data/data/com.termux/files/home/projects/nicetek/core/context_processors.py", line 30, in navigation_context
+    'nav_categories': Service.CATEGORY_CHOICES,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'Service' has no attribute 'CATEGORY_CHOICES'
+"GET / HTTP/1.1" 500 99234
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 211, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 176, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 333, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 511, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/urls/resolvers.py", line 842, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'login' not found. 'login' is not a valid view function or pattern name.
+"GET / HTTP/1.1" 500 182549
+Internal Server Error: /about/
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/views/generic/base.py", line 227, in get
+    context = self.get_context_data(**kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/core/views.py", line 66, in get_context_data
+    context['team_members'] = TeamMember.objects.filter(active=True)
+                              ^^^^^^^^^^
+NameError: name 'TeamMember' is not defined
+"GET /about/ HTTP/1.1" 500 85549
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 172, in render
+    with context.bind_template(self):
+         ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/debug_toolbar/panels/templates/panel.py", line 51, in _request_context_bind_template
+    context = processor(self.request)
+  File "/data/data/com.termux/files/home/projects/nicetek/core/context_processors.py", line 35, in notification_context
+    from apps.support.models import Ticket
+ModuleNotFoundError: No module named 'apps'
+"GET / HTTP/1.1" 500 100057
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 211, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 176, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 333, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 511, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/urls/resolvers.py", line 842, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'logout' not found. 'logout' is not a valid view function or pattern name.
+"GET / HTTP/1.1" 500 186180
+Internal Server Error: /clients/dashboard/
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/contrib/auth/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/views/generic/base.py", line 227, in get
+    context = self.get_context_data(**kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/clients/views.py", line 17, in get_context_data
+    client = Client.objects.get(user=self.request.user)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/query.py", line 722, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+clients.models.Client.DoesNotExist: Client matching query does not exist.
+"GET /clients/dashboard/ HTTP/1.1" 500 99902
+Internal Server Error: /admin-panel/
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 511, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/urls/resolvers.py", line 842, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'logout' not found. 'logout' is not a valid view function or pattern name.
+"GET /admin-panel/ HTTP/1.1" 500 152441
+Internal Server Error: /admin-panel/
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 511, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/urls/resolvers.py", line 842, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'logout' not found. 'logout' is not a valid view function or pattern name.
+"GET /admin-panel/ HTTP/1.1" 500 153510
+Internal Server Error: /clients/profile/
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/contrib/auth/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/views/generic/edit.py", line 201, in get
+    self.object = self.get_object()
+                  ~~~~~~~~~~~~~~~^^
+  File "/data/data/com.termux/files/home/projects/nicetek/clients/views.py", line 33, in get_object
+    return Client.objects.get(user=self.request.user)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/projects/nicetek/venv/lib/python3.13/site-packages/django/db/models/query.py", line 722, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+clients.models.Client.DoesNotExist: Client matching query does not exist.
+"GET /clients/profile/ HTTP/1.1" 500 99073
+Internal Server Error: /clients/dashboard/
+Traceback (most recent call last):
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/contrib/auth/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 227, in get
+    context = self.get_context_data(**kwargs)
+  File "/home/cosmic2012/nicetek/clients/views.py", line 17, in get_context_data
+    client = Client.objects.get(user=self.request.user)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/query.py", line 722, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+clients.models.Client.DoesNotExist: Client matching query does not exist.
+"GET /clients/dashboard/ HTTP/1.1" 500 93991
+Internal Server Error: /clients/profile/
+Traceback (most recent call last):
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/contrib/auth/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/edit.py", line 201, in get
+    self.object = self.get_object()
+                  ~~~~~~~~~~~~~~~^^
+  File "/home/cosmic2012/nicetek/clients/views.py", line 33, in get_object
+    return Client.objects.get(user=self.request.user)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/query.py", line 722, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+clients.models.Client.DoesNotExist: Client matching query does not exist.
+"GET /clients/profile/ HTTP/1.1" 500 93186
+Internal Server Error: /clients/dashboard/
+Traceback (most recent call last):
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/contrib/auth/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 227, in get
+    context = self.get_context_data(**kwargs)
+  File "/home/cosmic2012/nicetek/clients/views.py", line 17, in get_context_data
+    client = Client.objects.get(user=self.request.user)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/query.py", line 722, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+clients.models.Client.DoesNotExist: Client matching query does not exist.
+"GET /clients/dashboard/ HTTP/1.1" 500 93967
+Internal Server Error: /clients/profile/
+Traceback (most recent call last):
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/contrib/auth/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/edit.py", line 201, in get
+    self.object = self.get_object()
+                  ~~~~~~~~~~~~~~~^^
+  File "/home/cosmic2012/nicetek/clients/views.py", line 33, in get_object
+    return Client.objects.get(user=self.request.user)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/query.py", line 722, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+clients.models.Client.DoesNotExist: Client matching query does not exist.
+"GET /clients/profile/ HTTP/1.1" 500 93162
+Internal Server Error: /clients/profile/
+Traceback (most recent call last):
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/contrib/auth/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/edit.py", line 201, in get
+    self.object = self.get_object()
+                  ~~~~~~~~~~~~~~~^^
+  File "/home/cosmic2012/nicetek/clients/views.py", line 33, in get_object
+    print("user", self.request.user, flush=true)
+                                           ^^^^
+NameError: name 'true' is not defined. Did you mean: 'True'?
+"GET /clients/profile/ HTTP/1.1" 500 84221
+Internal Server Error: /clients/profile/
+Traceback (most recent call last):
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/contrib/auth/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/generic/edit.py", line 201, in get
+    self.object = self.get_object()
+                  ~~~~~~~~~~~~~~~^^
+  File "/home/cosmic2012/nicetek/clients/views.py", line 34, in get_object
+    return Client.objects.get(user=self.request.user)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/query.py", line 722, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+clients.models.Client.DoesNotExist: Client matching query does not exist.
+"GET /clients/profile/ HTTP/1.1" 500 93180
+Internal Server Error: /clients/profile/
+Traceback (most recent call last):
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: clients/profile.html
+"GET /clients/profile/ HTTP/1.1" 500 83847
+Internal Server Error: /clients/profile/
+Traceback (most recent call last):
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: clients/profile.html
+"GET /clients/profile/ HTTP/1.1" 500 83865
+Internal Server Error: /admin/packages/package/
+Traceback (most recent call last):
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column packages_package.billing_cycle does not exist
+LINE 1: ...n_details", "packages_package"."support_details", "packages_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/contrib/admin/options.py", line 776, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/utils/decorators.py", line 191, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/utils/decorators.py", line 189, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/views/decorators/cache.py", line 79, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/contrib/admin/sites.py", line 248, in inner
+    return view(request, *args, **kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/utils/decorators.py", line 47, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/utils/decorators.py", line 191, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/utils/decorators.py", line 189, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/contrib/admin/options.py", line 2434, in changelist_view
+    cl.formset = self._get_formset_with_permissions(request, cl.result_list)
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/contrib/admin/options.py", line 2288, in _get_formset_with_permissions
+    for form in formset.forms:
+                ^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/utils/functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/forms/formsets.py", line 207, in forms
+    for i in range(self.total_form_count())
+                   ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/forms/formsets.py", line 182, in total_form_count
+    initial_forms = self.initial_form_count()
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/forms/models.py", line 718, in initial_form_count
+    return len(self.get_queryset())
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/query.py", line 455, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column packages_package.billing_cycle does not exist
+LINE 1: ...n_details", "packages_package"."support_details", "packages_...
+                                                             ^
+
+"GET /admin/packages/package/ HTTP/1.1" 500 201271
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/core/handlers/base.py", line 222, in _get_response
+    response = response.render()
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/test/utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/defaulttags.py", line 249, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/home/cosmic2012/nicetek/venv/lib/python3.14/site-packages/django/template/defaulttags.py", line 201, in render
+    values = list(values)
+TypeError: 'RelatedManager' object is not iterable
+"GET / HTTP/1.1" 500 156848

@@ -1,0 +1,116 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}Services{% endblock %}
+{% block page_subtitle %}Manage all services{% endblock %}
+
+{% block content %}
+<div class="card-custom">
+    <div class="card-header">
+        <h5 class="card-title"><i class="fas fa-cogs me-2"></i> All Services</h5>
+        <a href="{% url 'admin_panel:service_create' %}" class="btn btn-primary-custom btn-sm">
+            <i class="fas fa-plus"></i> Add Service
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>Icon</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Featured</th>
+                        <th style="width:150px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for service in services %}
+                    <tr>
+                        <td>
+                            <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                                <i class="fas {{ service.icon }} text-primary"></i>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>{{ service.name }}</strong>
+                            <br>
+                            <small class="text-muted">{{ service.short_description|truncatechars:50 }}</small>
+                        </td>
+                        <td>{{ service.category.name|default:"-" }}</td>
+                        <td>
+                            {% if service.starting_price %}
+                            <span class="fw-bold text-success">KSh {{ service.starting_price|floatformat:0 }}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="status-badge {% if service.published %}success{% else %}secondary{% endif %}">
+                                {{ service.published|yesno:"Published,Draft" }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if service.is_featured %}
+                            <span class="badge bg-warning text-dark">Featured</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="action-btns d-flex gap-1">
+                                <a href="{% url 'admin_panel:service_detail' service.id %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'admin_panel:service_update' service.id %}" class="btn btn-sm btn-outline-success">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'admin_panel:service_delete' service.id %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-4">
+                            <i class="fas fa-cogs fa-2x text-muted mb-2 d-block"></i>
+                            <p class="text-muted">No services found. <a href="{% url 'admin_panel:service_create' %}">Create one</a></p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries</small>
+            <nav>
+                <ul class="pagination pagination-custom mb-0">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

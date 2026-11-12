@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ package.name }} - Packages - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="package-detail py-5">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'packages:list' %}">Packages</a></li>
+                <li class="breadcrumb-item active">{{ package.name }}</li>
+            </ol>
+        </nav>
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-start gap-3 mb-3">
+                    <h1 class="display-5 fw-bold">{{ package.name }}</h1>
+                    {% if package.is_recommended %}
+                    <span class="badge bg-warning text-dark fs-6 mt-2">Recommended</span>
+                    {% endif %}
+                    {% if package.is_best_value %}
+                    <span class="badge bg-success fs-6 mt-2">Best Value</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Main Image -->
+                {% if package.image %}
+                <div class="mb-4">
+                    <img src="{{ package.image.url }}" alt="{{ package.name }}" class="img-fluid rounded-3 shadow-sm">
+                </div>
+                {% endif %}
+                
+                <!-- Description -->
+                <div class="package-description">
+                    {{ package.description|safe }}
+                </div>
+                
+                {% if package.detailed_description %}
+                <div class="mt-4">
+                    <h5>Detailed Information</h5>
+                    {{ package.detailed_description|safe }}
+                </div>
+                {% endif %}
+                
+                <!-- Deliverables -->
+                {% if package.deliverables %}
+                <div class="mt-4">
+                    <h5>What's Included</h5>
+                    <div class="row g-2">
+                        {% for item in package.deliverables %}
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <span>{{ item }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Features -->
+                {% if package.features.all %}
+                <div class="mt-4">
+                    <h5>Key Features</h5>
+                    <div class="row g-3">
+                        {% for feature in package.features.all %}
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <i class="fas {{ feature.icon }} fa-2x text-primary me-3"></i>
+                                <div>
+                                    <h6>{{ feature.title }}</h6>
+                                    <p class="text-muted small">{{ feature.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Technical Specs -->
+                {% if package.technical_specs %}
+                <div class="mt-4">
+                    <h5>Technical Specifications</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                {% for key, value in package.technical_specs.items %}
+                                <tr>
+                                    <th style="width:40%;">{{ key|title }}</th>
+                                    <td>{{ value }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Add-ons -->
+                {% if package.addons.all %}
+                <div class="mt-4">
+                    <h5>Available Add-ons</h5>
+                    <div class="row g-3">
+                        {% for addon in package.addons.all %}
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h6>{{ addon.name }}</h6>
+                                        <span class="text-success fw-bold">+KSh {{ addon.price|floatformat:0 }}</span>
+                                    </div>
+                                    <p class="text-muted small">{{ addon.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Installation & Support -->
+                <div class="mt-4">
+                    <div class="row g-3">
+                        {% if package.timeline %}
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <i class="fas fa-clock text-primary"></i>
+                                    <h6>Timeline</h6>
+                                    <p class="mb-0">{{ package.timeline }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if package.warranty %}
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <i class="fas fa-shield-alt text-primary"></i>
+                                    <h6>Warranty</h6>
+                                    <p class="mb-0">{{ package.warranty }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if package.installation_details %}
+                <div class="mt-4">
+                    <h5>Installation Process</h5>
+                    {{ package.installation_details|safe }}
+                </div>
+                {% endif %}
+                
+                {% if package.support_details %}
+                <div class="mt-4">
+                    <h5>Support & Maintenance</h5>
+                    {{ package.support_details|safe }}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card shadow-sm sticky-top" style="top:80px;">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Package Details</h5>
+                        <hr>
+                        
+                        <div class="price-section mb-3">
+                            <p class="text-muted mb-1">Price</p>
+                            <h3 class="text-primary fw-bold">KSh {{ package.price|floatformat:0 }}</h3>
+                            {% if package.original_price %}
+                            <span class="text-decoration-line-through text-muted">
+                                KSh {{ package.original_price|floatformat:0 }}
+                            </span>
+                            <span class="badge bg-success ms-2">
+                                Save KSh {{ package.savings|floatformat:0 }}
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'core:quote' %}?package={{ package.id }}" class="btn btn-primary">
+                                <i class="fas fa-file-signature"></i> Request Quote
+                            </a>
+                            <a href="{% url 'core:contact' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-envelope"></i> Contact Sales
+                            </a>
+                            <button class="btn btn-outline-secondary" data-compare="{{ package.id }}">
+                                <i class="fas fa-balance-scale"></i> Compare
+                            </button>
+                        </div>
+                        
+                        <hr>
+                        
+                        <h6>Package Info</h6>
+                        <dl class="row small">
+                            <dt class="col-sm-6">Category</dt>
+                            <dd class="col-sm-6">{{ package.category.name }}</dd>
+                            
+                            <dt class="col-sm-6">Featured</dt>
+                            <dd class="col-sm-6">
+                                {% if package.is_featured %}
+                                <span class="badge bg-success">Yes</span>
+                                {% else %}
+                                <span class="badge bg-secondary">No</span>
+                                {% endif %}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Related Packages -->
+        {% if related_packages %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">Related Packages</h3>
+                <div class="row g-4">
+                    {% for related in related_packages %}
+                    <div class="col-md-4">
+                        <div class="card h-100 shadow-sm">
+                            {% if related.image %}
+                            <img src="{{ related.image.url }}" alt="{{ related.name }}" class="card-img-top" style="height:150px;object-fit:cover;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h6>{{ related.name }}</h6>
+                                <p class="text-primary fw-bold">KSh {{ related.price|floatformat:0 }}</p>
+                                <a href="{% url 'packages:detail' related.slug %}" class="btn btn-outline-primary btn-sm">
+                                    View Details <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

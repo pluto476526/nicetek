@@ -1,0 +1,88 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'core:home' %}">
+            {% if company.logo %}
+            <img src="{{ company.logo.url }}" alt="{{ company.name }}" height="40">
+            {% else %}
+            <span class="fw-bold text-primary fs-4">{{ company.name|default:"NiceTek" }}</span>
+            {% endif %}
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'core:home' %}">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {% if 'services' in request.path %}active{% endif %}" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-cogs"></i> Services
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="servicesDropdown">
+                        {% for service in nav_services %}
+                        <li><a class="dropdown-item" href="{% url 'services:detail' service.slug %}">{{ service.name }}</a></li>
+                        {% endfor %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'services:list' %}">All Services</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {% if 'packages' in request.path %}active{% endif %}" href="#" id="packagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-box"></i> Packages
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="packagesDropdown">
+                        {% for package in nav_packages %}
+                        <li><a class="dropdown-item" href="{% url 'packages:detail' package.slug %}">{{ package.name }}</a></li>
+                        {% endfor %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'packages:list' %}">All Packages</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'portfolio' in request.path %}active{% endif %}" href="{% url 'portfolio:list' %}">
+                        <i class="fas fa-briefcase"></i> Portfolio
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'blog' in request.path %}active{% endif %}" href="{% url 'blog:list' %}">
+                        <i class="fas fa-blog"></i> Blog
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'about' in request.path %}active{% endif %}" href="{% url 'core:about' %}">
+                        <i class="fas fa-info-circle"></i> About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary text-white px-3 ms-2" href="{% url 'core:contact' %}">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle"></i> {{ user.first_name }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="{% url 'clients:dashboard' %}"><i class="fas fa-dashboard"></i> Dashboard</a></li>
+                        <li><a class="dropdown-item" href="{% url 'clients:profile' %}"><i class="fas fa-user"></i> Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'clients:subscriptions' %}"><i class="fas fa-box"></i> Subscriptions</a></li>
+                        <li><a class="dropdown-item" href="{% url 'clients:invoices' %}"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item">
+			<a class="nav-link" href="{% url 'accounts:login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

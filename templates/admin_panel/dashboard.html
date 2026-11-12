@@ -1,0 +1,204 @@
+{% extends 'admin_panel/base.html' %}
+{% load static %}
+
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Welcome back, {{ user.get_full_name|default:user.username }}{% endblock %}
+
+{% block content %}
+<!-- Stats Row -->
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-number">{{ package_count|default:0 }}</div>
+                    <div class="stat-label">Packages</div>
+                </div>
+                <div class="stat-icon primary">
+                    <i class="fas fa-box"></i>
+                </div>
+            </div>
+            <div class="mt-2">
+                <span class="text-success"><i class="fas fa-arrow-up"></i> {{ published_packages|default:0 }}</span>
+                <span class="text-muted ms-2">published</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="stat-card border-success">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-number">{{ client_count|default:0 }}</div>
+                    <div class="stat-label">Clients</div>
+                </div>
+                <div class="stat-icon success">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+            <div class="mt-2">
+                <span class="text-success"><i class="fas fa-arrow-up"></i> {{ active_clients|default:0 }}</span>
+                <span class="text-muted ms-2">active</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="stat-card border-warning">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-number">{{ project_count|default:0 }}</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+                <div class="stat-icon warning">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+            </div>
+            <div class="mt-2">
+                <span class="text-warning"><i class="fas fa-clock"></i> {{ in_progress_projects|default:0 }}</span>
+                <span class="text-muted ms-2">in progress</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="stat-card border-danger">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-number">{{ ticket_count|default:0 }}</div>
+                    <div class="stat-label">Support Tickets</div>
+                </div>
+                <div class="stat-icon danger">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+            </div>
+            <div class="mt-2">
+                <span class="text-danger"><i class="fas fa-exclamation-circle"></i> {{ open_tickets|default:0 }}</span>
+                <span class="text-muted ms-2">open</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-bolt me-2"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'admin_panel:package_create' %}" class="btn btn-primary-custom">
+                        <i class="fas fa-plus"></i> New Package
+                    </a>
+                    <a href="{% url 'admin_panel:service_create' %}" class="btn btn-primary-custom">
+                        <i class="fas fa-plus"></i> New Service
+                    </a>
+                    <a href="{% url 'admin_panel:portfolio_create' %}" class="btn btn-primary-custom">
+                        <i class="fas fa-plus"></i> New Portfolio
+                    </a>
+                    <a href="{% url 'admin_panel:blog_create' %}" class="btn btn-primary-custom">
+                        <i class="fas fa-plus"></i> New Blog Post
+                    </a>
+                    <a href="{% url 'admin_panel:testimonial_create' %}" class="btn btn-success-custom">
+                        <i class="fas fa-plus"></i> New Testimonial
+                    </a>
+                    <a href="{% url 'admin_panel:client_create' %}" class="btn btn-success-custom">
+                        <i class="fas fa-user-plus"></i> Add Client
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-clock me-2"></i> Recent Activity</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_activities %}
+                <div class="timeline">
+                    {% for activity in recent_activities|slice:":10" %}
+                    <div class="d-flex mb-3">
+                        <div class="me-3">
+                            <div class="rounded-circle bg-{{ activity.color|default:'primary' }} text-white d-flex align-items-center justify-content-center" 
+                                 style="width:40px;height:40px;flex-shrink:0;">
+                                <i class="fas fa-{{ activity.icon|default:'clock' }}"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="mb-0">{{ activity.message }}</p>
+                            <small class="text-muted">{{ activity.time|timesince }} ago</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-3">No recent activity</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Quick Stats -->
+        <div class="card-custom mb-4">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-chart-simple me-2"></i> Quick Stats</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Total Blog Posts</span>
+                    <span class="fw-bold">{{ blog_count|default:0 }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Total Testimonials</span>
+                    <span class="fw-bold">{{ testimonial_count|default:0 }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Quote Requests</span>
+                    <span class="fw-bold">{{ quote_count|default:0 }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Contact Messages</span>
+                    <span class="fw-bold">{{ contact_count|default:0 }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2">
+                    <span class="text-muted">Newsletter Subscribers</span>
+                    <span class="fw-bold">{{ subscriber_count|default:0 }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pending Items -->
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-clock me-2 text-warning"></i> Pending Items</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Draft Blog Posts</span>
+                    <span class="badge bg-secondary">{{ draft_blog_posts|default:0 }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Open Support Tickets</span>
+                    <span class="badge bg-danger">{{ open_tickets|default:0 }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Pending Quote Requests</span>
+                    <span class="badge bg-warning">{{ pending_quotes|default:0 }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2">
+                    <span class="text-muted">Unread Messages</span>
+                    <span class="badge bg-danger">{{ unread_messages|default:0 }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

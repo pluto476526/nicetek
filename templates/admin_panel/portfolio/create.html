@@ -1,0 +1,195 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}{{ title|default:"Create Portfolio Project" }}{% endblock %}
+{% block page_subtitle %}{{ subtitle|default:"Add a new portfolio project" }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-{% if form.instance.pk %}edit{% else %}plus{% endif %} me-2"></i>
+                    {{ title|default:"Create Portfolio Project" }}
+                </h5>
+                <a href="{% url 'admin_panel:portfolio_list' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" class="form-custom">
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Please fix the following errors:</strong>
+                        <ul class="mb-0">
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                <li>{{ field|title }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Basic Information -->
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-info-circle me-2"></i> Basic Information
+                            </h6>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <label class="form-label">Title *</label>
+                            <input type="text" name="title" class="form-control" 
+                                   value="{{ form.title.value|default:'' }}" required>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Category</label>
+                            <select name="category" class="form-select">
+                                <option value="">Select category...</option>
+                                {% for cat in categories %}
+                                <option value="{{ cat.id }}" {% if form.category.value == cat.id %}selected{% endif %}>
+                                    {{ cat.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Client *</label>
+                            <input type="text" name="client" class="form-control" 
+                                   value="{{ form.client.value|default:'' }}" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Industry *</label>
+                            <select name="industry" class="form-select" required>
+                                <option value="">Select industry...</option>
+                                <option value="school" {% if form.industry.value == 'school' %}selected{% endif %}>Schools</option>
+                                <option value="business" {% if form.industry.value == 'business' %}selected{% endif %}>Businesses</option>
+                                <option value="airbnb" {% if form.industry.value == 'airbnb' %}selected{% endif %}>Airbnb/Hostels</option>
+                                <option value="apartment" {% if form.industry.value == 'apartment' %}selected{% endif %}>Apartments</option>
+                                <option value="office" {% if form.industry.value == 'office' %}selected{% endif %}>Offices</option>
+                                <option value="other" {% if form.industry.value == 'other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Completion Date *</label>
+                            <input type="date" name="completion_date" class="form-control" 
+                                   value="{{ form.completion_date.value|date:'Y-m-d'|default:'' }}" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Website URL</label>
+                            <input type="url" name="website_url" class="form-control" 
+                                   value="{{ form.website_url.value|default:'' }}" 
+                                   placeholder="https://example.com">
+                        </div>
+                    </div>
+                    
+                    <!-- Media -->
+                    <div class="row g-3 mt-3">
+                        <div class="col-12">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-image me-2"></i> Media
+                            </h6>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Main Image</label>
+                            <input type="file" name="image" class="form-control" accept="image/*">
+                            {% if form.instance.image %}
+                            <div class="mt-2">
+                                <img src="{{ form.instance.image.url }}" alt="Current" class="image-thumb">
+                                <small class="text-muted d-block">Current image</small>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="row g-3 mt-3">
+                        <div class="col-12">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-file-alt me-2"></i> Content
+                            </h6>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Description *</label>
+                            <textarea name="description" class="form-control" rows="4" required>{{ form.description.value|default:'' }}</textarea>
+                            <small class="form-text">Brief overview of the project</small>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">The Challenge *</label>
+                            <textarea name="challenge" class="form-control" rows="4" required>{{ form.challenge.value|default:'' }}</textarea>
+                            <small class="form-text">What problem did the client have?</small>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Our Solution *</label>
+                            <textarea name="solution" class="form-control" rows="4" required>{{ form.solution.value|default:'' }}</textarea>
+                            <small class="form-text">How did we solve the problem?</small>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Results *</label>
+                            <textarea name="results" class="form-control" rows="4" required>{{ form.results.value|default:'' }}</textarea>
+                            <small class="form-text">What were the outcomes/benefits?</small>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Technologies Used</label>
+                            <input type="text" name="technologies_used" class="form-control" 
+                                   value="{{ form.technologies_used.value|default:'' }}"
+                                   placeholder="WiFi, CCTV, WordPress, etc.">
+                            <small class="form-text">Comma-separated list of technologies used</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Status -->
+                    <div class="row g-3 mt-3">
+                        <div class="col-12">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-toggle-on me-2"></i> Status
+                            </h6>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="published" class="form-check-input" 
+                                       {% if form.published.value == None or form.published.value %}checked{% endif %}>
+                                <label class="form-check-label">Published</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="featured" class="form-check-input" 
+                                       {% if form.featured.value %}checked{% endif %}>
+                                <label class="form-check-label">Featured</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save"></i> Save Project
+                        </button>
+                        <a href="{% url 'admin_panel:portfolio_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

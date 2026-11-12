@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Maintenance Mode - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="maintenance-mode py-5" style="min-height:80vh;display:flex;align-items:center;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="maintenance-icon mb-4">
+                    <i class="fas fa-tools text-warning" style="font-size:6rem;"></i>
+                </div>
+                <h1 class="display-4 fw-bold mb-3">We'll Be Back Soon!</h1>
+                <p class="lead text-muted mb-4">
+                    {% if message %}
+                    {{ message }}
+                    {% else %}
+                    Our website is currently undergoing scheduled maintenance. We apologize for the inconvenience and will be back shortly.
+                    {% endif %}
+                </p>
+                <div class="progress mb-3" style="height:20px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width:75%;"></div>
+                </div>
+                <p class="text-muted">Estimated completion: ~15 minutes</p>
+                
+                <div class="mt-4">
+                    <a href="mailto:{{ company.email|default:SITE_EMAIL }}" class="btn btn-primary">
+                        <i class="fas fa-envelope"></i> Contact Us
+                    </a>
+                    <a href="tel:{{ company.phone|default:SITE_PHONE }}" class="btn btn-outline-primary">
+                        <i class="fas fa-phone"></i> Call Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

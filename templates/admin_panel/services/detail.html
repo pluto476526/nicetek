@@ -1,0 +1,199 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}{{ service.name }}{% endblock %}
+{% block page_subtitle %}Service Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-cog me-2"></i> Service Information
+                </h5>
+                <div>
+                    <a href="{% url 'admin_panel:service_update' service.id %}" class="btn btn-success-custom btn-sm">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a href="{% url 'admin_panel:service_delete' service.id %}" class="btn btn-danger-custom btn-sm">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4 text-center">
+                        {% if service.image %}
+                        <img src="{{ service.image.url }}" alt="{{ service.name }}" 
+                             class="img-fluid rounded" style="max-height:250px;">
+                        {% else %}
+                        <div class="bg-light rounded p-5 text-muted">
+                            <i class="fas fa-image fa-3x"></i>
+                            <p>No image</p>
+                        </div>
+                        {% endif %}
+                        <div class="mt-3">
+                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width:80px;height:80px;">
+                                <i class="fas {{ service.icon }} fa-3x text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <dl class="row">
+                            <dt class="col-sm-4">Name</dt>
+                            <dd class="col-sm-8">{{ service.name }}</dd>
+                            
+                            <dt class="col-sm-4">Category</dt>
+                            <dd class="col-sm-8">{{ service.category.name|default:"-" }}</dd>
+                            
+                            <dt class="col-sm-4">Icon</dt>
+                            <dd class="col-sm-8"><code>{{ service.icon }}</code></dd>
+                            
+                            <dt class="col-sm-4">Starting Price</dt>
+                            <dd class="col-sm-8">
+                                {% if service.starting_price %}
+                                <span class="fw-bold text-success">KSh {{ service.starting_price|floatformat:0 }}</span>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </dd>
+                            
+                            <dt class="col-sm-4">Status</dt>
+                            <dd class="col-sm-8">
+                                <span class="status-badge {% if service.published %}success{% else %}secondary{% endif %}">
+                                    {{ service.published|yesno:"Published,Draft" }}
+                                </span>
+                                {% if service.is_featured %}
+                                <span class="badge bg-warning text-dark ms-1">Featured</span>
+                                {% endif %}
+                            </dd>
+                            
+                            <dt class="col-sm-4">Order</dt>
+                            <dd class="col-sm-8">{{ service.order }}</dd>
+                            
+                            <dt class="col-sm-4">Created</dt>
+                            <dd class="col-sm-8">{{ service.created_at|date:"M d, Y H:i" }}</dd>
+                            
+                            <dt class="col-sm-4">Last Updated</dt>
+                            <dd class="col-sm-8">{{ service.updated_at|date:"M d, Y H:i" }}</dd>
+                        </dl>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <h6>Short Description</h6>
+                <div class="bg-light p-3 rounded mb-3">
+                    {{ service.short_description }}
+                </div>
+                
+                <h6>Description</h6>
+                <div class="bg-light p-3 rounded mb-3">
+                    {{ service.description|safe }}
+                </div>
+                
+                {% if service.detailed_description %}
+                <h6>Detailed Description</h6>
+                <div class="bg-light p-3 rounded mb-3">
+                    {{ service.detailed_description|safe }}
+                </div>
+                {% endif %}
+                
+                {% if service.features %}
+                <h6>Features</h6>
+                <ul class="list-group mb-3">
+                    {% for feature in service.features %}
+                    <li class="list-group-item">
+                        <i class="fas fa-check-circle text-success me-2"></i> {{ feature }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                
+                {% if service.technical_specs %}
+                <h6>Technical Specifications</h6>
+                <div class="table-responsive mb-3">
+                    <table class="table table-bordered table-sm">
+                        <tbody>
+                            {% for key, value in service.technical_specs.items %}
+                            <tr>
+                                <th style="width:40%;">{{ key|title }}</th>
+                                <td>{{ value }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+                
+                <!-- Service Features -->
+                {% if service.feature_list.all %}
+                <h6>Feature List</h6>
+                <div class="row g-3 mb-3">
+                    {% for feature in service.feature_list.all %}
+                    <div class="col-md-6">
+                        <div class="border rounded p-3">
+                            <h6><i class="fas {{ feature.icon }} text-primary me-2"></i> {{ feature.title }}</h6>
+                            <p class="text-muted small mb-0">{{ feature.description }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <!-- Service FAQs -->
+                {% if service.faqs.all %}
+                <h6>Service FAQs</h6>
+                <div class="accordion" id="serviceFaqs">
+                    {% for faq in service.faqs.all %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" 
+                                    data-bs-target="#svcFaq{{ forloop.counter }}">
+                                {{ faq.question }}
+                            </button>
+                        </h2>
+                        <div id="svcFaq{{ forloop.counter }}" class="accordion-collapse collapse" 
+                             data-bs-parent="#serviceFaqs">
+                            <div class="accordion-body">
+                                {{ faq.answer|safe }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card-custom mb-3">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-link me-2"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'admin_panel:service_update' service.id %}" class="btn btn-success-custom">
+                        <i class="fas fa-edit"></i> Edit Service
+                    </a>
+                    <a href="{% url 'admin_panel:service_delete' service.id %}" class="btn btn-danger-custom">
+                        <i class="fas fa-trash"></i> Delete Service
+                    </a>
+                    {% if service.published %}
+                    <a href="{% url 'services:detail' service.slug %}" target="_blank" class="btn btn-primary-custom">
+                        <i class="fas fa-external-link-alt"></i> View on Site
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'admin_panel:service_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

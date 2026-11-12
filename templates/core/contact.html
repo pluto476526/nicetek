@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="contact-page py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Get In Touch</h1>
+                <p class="lead text-muted">Have questions or ready to get started? We'd love to hear from you.</p>
+                
+                <div class="contact-info mt-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:50px;height:50px;">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Phone</h6>
+                            <a href="tel:{{ company.phone|default:SITE_PHONE }}" class="text-decoration-none">{{ company.phone|default:SITE_PHONE }}</a>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:50px;height:50px;">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Email</h6>
+                            <a href="mailto:{{ company.email|default:SITE_EMAIL }}" class="text-decoration-none">{{ company.email|default:SITE_EMAIL }}</a>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:50px;height:50px;">
+                            <i class="fas fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Address</h6>
+                            <p class="mb-0">{{ company.address|default:SITE_ADDRESS }}</p>
+                        </div>
+                    </div>
+                    
+                    {% if company.whatsapp_number %}
+                    <div class="d-flex align-items-center">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:50px;height:50px;">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">WhatsApp</h6>
+                            <a href="https://wa.me/{{ company.whatsapp_number }}" target="_blank" class="text-decoration-none">Chat with us</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Social Links -->
+                <div class="mt-4">
+                    <h6>Follow Us</h6>
+                    <div class="d-flex gap-2">
+                        {% if company.facebook_url %}
+                        <a href="{{ company.facebook_url }}" target="_blank" class="btn btn-outline-primary rounded-circle" style="width:40px;height:40px;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        {% endif %}
+                        {% if company.twitter_url %}
+                        <a href="{{ company.twitter_url }}" target="_blank" class="btn btn-outline-info rounded-circle" style="width:40px;height:40px;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        {% endif %}
+                        {% if company.linkedin_url %}
+                        <a href="{{ company.linkedin_url }}" target="_blank" class="btn btn-outline-primary rounded-circle" style="width:40px;height:40px;">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        {% endif %}
+                        {% if company.instagram_url %}
+                        <a href="{{ company.instagram_url }}" target="_blank" class="btn btn-outline-danger rounded-circle" style="width:40px;height:40px;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        {% endif %}
+                        {% if company.youtube_url %}
+                        <a href="{{ company.youtube_url }}" target="_blank" class="btn btn-outline-danger rounded-circle" style="width:40px;height:40px;">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h4 class="mb-3">Send Us a Message</h4>
+                        <form method="post" action="{% url 'core:contact' %}">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" name="name" class="form-control" placeholder="Your name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control" placeholder="your@email.com" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" name="phone" class="form-control" placeholder="+254 700 000 000">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Subject</label>
+                                    <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Inquiry Type</label>
+                                    <select name="inquiry_type" class="form-select">
+                                        <option value="general">General Inquiry</option>
+                                        <option value="sales">Sales Inquiry</option>
+                                        <option value="support">Support</option>
+                                        <option value="quote">Request Quote</option>
+                                        <option value="partnership">Partnership</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Message</label>
+                                    <textarea name="message" class="form-control" rows="5" placeholder="Your message..." required></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary w-100 py-2">
+                                        <i class="fas fa-paper-plane"></i> Send Message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map -->
+        {% if company.google_maps_embed %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body p-0">
+                        <div style="height:400px;">
+                            {{ company.google_maps_embed|safe }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

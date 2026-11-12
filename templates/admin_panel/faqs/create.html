@@ -1,0 +1,74 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}{{ title|default:"Create FAQ" }}{% endblock %}
+{% block page_subtitle %}{{ subtitle|default:"Add a new FAQ" }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-{% if form.instance.pk %}edit{% else %}plus{% endif %} me-2"></i>
+                    {{ title|default:"Create FAQ" }}
+                </h5>
+                <a href="{% url 'admin_panel:faq_list' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+            <div class="card-body">
+                <form method="post" class="form-custom">
+                    {% csrf_token %}
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Category *</label>
+                            <select name="category" class="form-select" required>
+                                <option value="">Select category...</option>
+                                <option value="general" {% if form.category.value == 'general' %}selected{% endif %}>General</option>
+                                <option value="packages" {% if form.category.value == 'packages' %}selected{% endif %}>Packages</option>
+                                <option value="installation" {% if form.category.value == 'installation' %}selected{% endif %}>Installation</option>
+                                <option value="support" {% if form.category.value == 'support' %}selected{% endif %}>Support</option>
+                                <option value="billing" {% if form.category.value == 'billing' %}selected{% endif %}>Billing & Payment</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Order</label>
+                            <input type="number" name="order" class="form-control" value="{{ form.order.value|default:0 }}">
+                            <small class="form-text">Lower numbers appear first</small>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Question *</label>
+                            <input type="text" name="question" class="form-control" value="{{ form.question.value|default:'' }}" required>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Answer *</label>
+                            <textarea name="answer" class="form-control" rows="5" required>{{ form.answer.value|default:'' }}</textarea>
+                            <small class="form-text">HTML content supported</small>
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="active" class="form-check-input" {% if form.active.value == None or form.active.value %}checked{% endif %}>
+                                <label class="form-check-label">Active</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save"></i> Save FAQ
+                        </button>
+                        <a href="{% url 'admin_panel:faq_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

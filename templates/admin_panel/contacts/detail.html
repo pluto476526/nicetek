@@ -1,0 +1,102 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}Contact Message{% endblock %}
+{% block page_subtitle %}From {{ message.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-info-circle me-2"></i> Message Details</h5>
+                <div>
+                    <a href="mailto:{{ message.email }}" class="btn btn-success-custom btn-sm">
+                        <i class="fas fa-reply"></i> Reply
+                    </a>
+                    <a href="{% url 'admin_panel:contact_delete' message.id %}" class="btn btn-danger-custom btn-sm">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <h6>Sender Information</h6>
+                        <dl>
+                            <dt>Name</dt>
+                            <dd>{{ message.name }}</dd>
+                            <dt>Email</dt>
+                            <dd><a href="mailto:{{ message.email }}">{{ message.email }}</a></dd>
+                            <dt>Phone</dt>
+                            <dd>{{ message.phone|default:"-" }}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Message Information</h6>
+                        <dl>
+                            <dt>Subject</dt>
+                            <dd><strong>{{ message.subject }}</strong></dd>
+                            <dt>Type</dt>
+                            <dd><span class="badge bg-primary">{{ message.get_inquiry_type_display }}</span></dd>
+                            <dt>Status</dt>
+                            <dd>
+                                <span class="status-badge {% if message.status == 'closed' %}secondary{% elif message.status == 'replied' %}success{% elif message.status == 'read' %}info{% else %}warning{% endif %}">
+                                    {{ message.get_status_display }}
+                                </span>
+                            </dd>
+                            <dt>Received</dt>
+                            <dd>{{ message.created_at|date:"M d, Y H:i" }}</dd>
+                        </dl>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <h6>Message</h6>
+                <div class="bg-light p-3 rounded">
+                    {{ message.message|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-link me-2"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="mailto:{{ message.email }}" class="btn btn-primary-custom">
+                        <i class="fas fa-reply"></i> Reply via Email
+                    </a>
+                    <a href="tel:{{ message.phone }}" class="btn btn-success-custom">
+                        <i class="fas fa-phone"></i> Call {{ message.name }}
+                    </a>
+                    <button class="btn btn-warning" onclick="markAsReplied()">
+                        <i class="fas fa-check"></i> Mark as Replied
+                    </button>
+                    <a href="{% url 'admin_panel:contact_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function markAsReplied() {
+    fetch('{% url "admin_panel:contact_mark_replied" message.id %}', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    }).then(response => {
+        if (response.ok) {
+            location.reload();
+        }
+    });
+}
+</script>
+{% endblock %}

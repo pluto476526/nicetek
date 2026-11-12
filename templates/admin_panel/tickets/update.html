@@ -1,0 +1,102 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}{{ title|default:"Update Ticket" }}{% endblock %}
+{% block page_subtitle %}{{ subtitle|default:"Update ticket details" }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-edit me-2"></i>
+                    {{ title|default:"Update Ticket" }}
+                </h5>
+                <a href="{% url 'admin_panel:ticket_list' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+            <div class="card-body">
+                <form method="post" class="form-custom">
+                    {% csrf_token %}
+                    
+                    <!-- Ticket Info Display -->
+                    <div class="alert alert-info">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>Subject:</strong> {{ object.subject }}<br>
+                                <strong>Client:</strong> {{ object.client.company_name }}<br>
+                                <strong>Created:</strong> {{ object.created_at|date:"M d, Y H:i" }}
+                            </div>
+                            <div class="text-end">
+                                <span class="status-badge {% if object.status == 'open' %}danger{% elif object.status == 'in_progress' %}warning{% elif object.status == 'resolved' %}success{% else %}secondary{% endif %}">
+                                    {{ object.get_status_display }}
+                                </span>
+                                <br>
+                                <span class="badge bg-{% if object.priority == 'urgent' %}danger{% elif object.priority == 'high' %}warning{% elif object.priority == 'medium' %}info{% else %}secondary{% endif %} mt-1">
+                                    {{ object.get_priority_display }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Status *</label>
+                            <select name="status" class="form-select" required>
+                                <option value="open" {% if form.status.value == 'open' %}selected{% endif %}>Open</option>
+                                <option value="in_progress" {% if form.status.value == 'in_progress' %}selected{% endif %}>In Progress</option>
+                                <option value="resolved" {% if form.status.value == 'resolved' %}selected{% endif %}>Resolved</option>
+                                <option value="closed" {% if form.status.value == 'closed' %}selected{% endif %}>Closed</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Priority *</label>
+                            <select name="priority" class="form-select" required>
+                                <option value="low" {% if form.priority.value == 'low' %}selected{% endif %}>Low</option>
+                                <option value="medium" {% if form.priority.value == 'medium' %}selected{% endif %}>Medium</option>
+                                <option value="high" {% if form.priority.value == 'high' %}selected{% endif %}>High</option>
+                                <option value="urgent" {% if form.priority.value == 'urgent' %}selected{% endif %}>Urgent</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Assigned To</label>
+                            <select name="assigned_to" class="form-select">
+                                <option value="">Unassigned</option>
+                                {% for user in form.fields.assigned_to.queryset %}
+                                <option value="{{ user.id }}" 
+                                        {% if form.assigned_to.value == user.id %}selected{% endif %}>
+                                    {{ user.get_full_name|default:user.username }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Category</label>
+                            <select name="category" class="form-select">
+                                <option value="technical" {% if form.category.value == 'technical' %}selected{% endif %}>Technical Support</option>
+                                <option value="billing" {% if form.category.value == 'billing' %}selected{% endif %}>Billing & Payment</option>
+                                <option value="installation" {% if form.category.value == 'installation' %}selected{% endif %}>Installation Issue</option>
+                                <option value="general" {% if form.category.value == 'general' %}selected{% endif %}>General Inquiry</option>
+                                <option value="feature" {% if form.category.value == 'feature' %}selected{% endif %}>Feature Request</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save"></i> Update Ticket
+                        </button>
+                        <a href="{% url 'admin_panel:ticket_detail' object.id %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

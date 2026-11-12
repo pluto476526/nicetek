@@ -1,0 +1,84 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block page_title %}{{ title|default:"Add Team Member" }}{% endblock %}
+{% block page_subtitle %}{{ subtitle|default:"Add a new team member" }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-{% if form.instance.pk %}edit{% else %}plus{% endif %} me-2"></i>
+                    {{ title|default:"Add Team Member" }}
+                </h5>
+                <a href="{% url 'admin_panel:team_list' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" class="form-custom">
+                    {% csrf_token %}
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Name *</label>
+                            <input type="text" name="name" class="form-control" value="{{ form.name.value|default:'' }}" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Position *</label>
+                            <input type="text" name="position" class="form-control" value="{{ form.position.value|default:'' }}" required>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">Bio *</label>
+                            <textarea name="bio" class="form-control" rows="5" required>{{ form.bio.value|default:'' }}</textarea>
+                            <small class="form-text">HTML content supported</small>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Photo</label>
+                            <input type="file" name="photo" class="form-control" accept="image/*">
+                            {% if form.instance.photo %}
+                            <div class="mt-2">
+                                <img src="{{ form.instance.photo.url }}" alt="Current" class="image-thumb">
+                                <small class="text-muted d-block">Current photo</small>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Social Links</label>
+                            <textarea name="social_links" class="form-control" rows="3" placeholder='{"facebook": "https://facebook.com/username", "twitter": "https://twitter.com/username"}'>{{ form.social_links.value|default:'' }}</textarea>
+                            <small class="form-text">JSON format: {"platform": "url"}</small>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Order</label>
+                            <input type="number" name="order" class="form-control" value="{{ form.order.value|default:0 }}">
+                            <small class="form-text">Lower numbers appear first</small>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-check mt-4">
+                                <input type="checkbox" name="active" class="form-check-input" {% if form.active.value == None or form.active.value %}checked{% endif %}>
+                                <label class="form-check-label">Active</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save"></i> Save Team Member
+                        </button>
+                        <a href="{% url 'admin_panel:team_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
